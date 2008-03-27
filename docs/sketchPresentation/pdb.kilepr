@@ -1,0 +1,24 @@
+[General]
+img_extIsRegExp=false
+img_extensions=.eps .pdf .dvi .ps .fig .gif .jpg .jpeg .png
+kileprversion=1
+kileversion=1.9.3
+lastDocument=
+masterDocument=presentation.tex
+name=pdb
+pkg_extIsRegExp=false
+pkg_extensions=.cls .sty .dtx
+src_extIsRegExp=false
+src_extensions=.tex .ltx .bib .mp
+
+[Tools]
+MakeIndex=
+QuickBuild=PDFLaTeX+ViewPDF
+
+[item:presentation.tex]
+archive=true
+column=249
+encoding=
+highlight=
+line=0
+open=false

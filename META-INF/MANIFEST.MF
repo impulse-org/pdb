@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Program Database
+Bundle-SymbolicName: org.eclipse.imp.pdb;singleton:=true
+Bundle-Version: 0.1.0
+Bundle-Activator: org.eclipse.imp.pdb.PDBPlugin
+Bundle-Vendor: rfuhrer@watson.ibm.com
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.imp.runtime,
+ lpg.runtime,
+ org.eclipse.jface.text,
+ org.eclipse.ui.console,
+ org.eclipse.platform.source,
+ org.eclipse.imp.smapifier,
+ org.eclipse.jdt.core
+Eclipse-LazyStart: true
+Export-Package: org.eclipse.imp.pdb,
+ org.eclipse.imp.pdb.analysis,
+ org.eclipse.imp.pdb.facts,
+ org.eclipse.imp.pdb.facts.db,
+ org.eclipse.imp.pdb.facts.db.context,
+ org.eclipse.imp.pdb.facts.impl,
+ org.eclipse.imp.pdb.facts.impl.hash,
+ org.eclipse.imp.pdb.facts.type
