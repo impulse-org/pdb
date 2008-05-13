@@ -36,9 +36,7 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
 class Relation extends WritableValue<IRelationWriter> implements IRelation {
 	static class RelationWriter extends WriterBase<IRelationWriter> implements
 			IRelationWriter {
-		private Relation fRelation; // cached for convenience (avoids casts on
-
-		// every insert)
+		private Relation fRelation; // cached for convenience (avoids casts on every insert)
 
 		public RelationWriter(Relation relation) {
 			super(relation);
@@ -65,7 +63,10 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		public void insertAll(IList other) throws FactTypeError {
 			checkMutable();
 			fRelation.checkInsert(other.getElementType());
-			fRelation.fTuples.addAll((Collection<? extends ITuple>) ((List) other).fList);
+			// Perhaps a bug in javac 5.0 on MacOS X? The following cast fails with an
+			// "inconvertible type" error, even though the type arguments get erased:
+//                      fRelation.fTuples.addAll((Collection<? extends ITuple>) ((List) other).fList);
+			fRelation.fTuples.addAll((Collection) ((List) other).fList);
 		}
 
 		public void insertAll(ISet set) throws FactTypeError {
