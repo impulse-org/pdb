@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
  org.eclipse.imp.runtime,
  org.eclipse.jdt.core,
- org.eclipse.ui,
- lpg.runtime
+ org.eclipse.ui
 Eclipse-LazyStart: true
 Export-Package: org.eclipse.imp.pdb,
  org.eclipse.imp.pdb.analysis,
