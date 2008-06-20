@@ -116,6 +116,14 @@ public interface IValueFactory {
     public ITuple tuple(IValue a, IValue b, IValue c, IValue d, IValue e, IValue f, IValue g);
 
     /**
+     * @param elements an array that contains the elements of the tuple
+     * @param size the number of elements to read from the array to construct a tuple
+     * @return a tuple as wide as the size of the value array. Use this method with care,
+     * this method will duplicate the array and can be expensive.
+     */
+    public ITuple tuple(IValue[] elements, int size);
+    
+    /**
      * @param setType the type of the set
      * @return an empty set of type setType
      * @throws FactTypeError if setType is not a subtype of SetType

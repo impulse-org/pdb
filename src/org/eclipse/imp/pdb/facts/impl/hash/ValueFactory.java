@@ -484,6 +484,10 @@ public class ValueFactory extends BaseValueFactory {
 			IValue f, IValue g) {
 		return new Tuple(a, b, c, d, e, f, g);
 	}
-
-
+	
+	public ITuple tuple(IValue[] elements, int size) {
+		IValue[] tmp = new IValue[size];
+		System.arraycopy(elements, 0, tmp, 0, size);
+		return new Tuple(tmp);
+	}
 }
