@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Program Database
 Bundle-SymbolicName: org.eclipse.imp.pdb;singleton:=true
-Bundle-Version: 0.1.12
+Bundle-Version: 0.1.13
 Bundle-Activator: org.eclipse.imp.pdb.PDBPlugin
 Bundle-Vendor: rfuhrer@watson.ibm.com
 Bundle-Localization: plugin
