@@ -14,6 +14,7 @@ package org.eclipse.imp.pdb.facts;
 
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.NamedType;
+import org.eclipse.imp.pdb.facts.type.TreeNodeType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 
@@ -122,6 +123,16 @@ public interface IValueFactory {
      * this method will duplicate the array and can be expensive.
      */
     public ITuple tuple(IValue[] elements, int size);
+    
+    /**
+     * construct a tree node
+     * 
+     * @param type     describes the type of the node, its name and its children
+     * @param children the children of the node
+     * @return
+     */
+    public ITree tree(TreeNodeType type, IValue[] children);
+    public ITree tree(NamedType type, IValue[] children);
     
     /**
      * @param setType the type of the set
