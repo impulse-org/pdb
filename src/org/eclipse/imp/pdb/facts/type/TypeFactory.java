@@ -6,13 +6,14 @@
 * http://www.eclipse.org/legal/epl-v10.html
 *
 * Contributors:
-*    Robert Fuhrer (rfuhrer@watson.ibm.com) - initial API and implementation
-
+*    Robert Fuhrer (rfuhrer@watson.ibm.com) 
+*    Jurgen Vinju  (jurgen@vinju.org)       
 *******************************************************************************/
 
 package org.eclipse.imp.pdb.facts.type;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -24,6 +25,8 @@ public class TypeFactory {
     private Map<Type,Type> fCache = new WeakHashMap<Type,Type>();
 
     private Map<String, NamedType> fNamedTypes= new HashMap<String, NamedType>();
+    
+    private Map<TreeSortType, List<TreeNodeType>> fSignatures = new HashMap<TreeSortType, List<TreeNodeType>>();
 
     private ValueType sValueType= ValueType.getInstance();
     
@@ -42,14 +45,20 @@ public class TypeFactory {
     private SourceLocationType sSourceLocationType= SourceLocationType.getInstance();
 
     private SetType sProtoSet = new SetType(null);
+    
+    private MapType sProtoMap = new MapType(null, null);
 
     private RelationType sProtoRelation= new RelationType((TupleType) null);
 
     private TuplePrototype sProtoTuple= TuplePrototype.getInstance();
     
     private NamedType sProtoNamedType = new NamedType(null, null);
+    
+    private TreeSortType sProtoTreeSortType = new TreeSortType(null);
 
     private ListType sProtoListType = new ListType(null);
+    
+    private TreeNodeType sProtoTreeType = new TreeNodeType(null, null, null);
 
     public static TypeFactory getInstance() {
         return sInstance;
@@ -57,9 +66,6 @@ public class TypeFactory {
 
     private TypeFactory() { }
 
-   
-
-  
     public Type valueType() {
         return sValueType;
     }
@@ -100,6 +106,11 @@ public class TypeFactory {
         return sSourceLocationType;
     }
 
+    /**
+     * A special subclass of TupleType to construct a prototype
+     * with resizeable arrays for the field types and names.
+     *
+     */
     private static class TuplePrototype extends TupleType {
         private static final TuplePrototype sInstance= new TuplePrototype();
 
@@ -112,7 +123,7 @@ public class TypeFactory {
         private int fStart = 0;
 
         private TuplePrototype() {
-            super(7, 0, new Type[7]);
+            super(7, 0, new Type[7], new String[7]);
         }
 
         /**
@@ -121,9 +132,14 @@ public class TypeFactory {
          */
         private void setWidth(int N) {
             if ((fStart + N) > fAllocatedWidth) {
-                Type[] newFieldTypes = new Type[fAllocatedWidth= (fStart + N)*2];
+            	fAllocatedWidth= (fStart + N)*2;
+                Type[] newFieldTypes = new Type[fAllocatedWidth];
                 System.arraycopy(fFieldTypes, 0, newFieldTypes, 0, fStart);
                 fFieldTypes = newFieldTypes;
+                
+                String[] newFieldNames = new String[fAllocatedWidth];
+                System.arraycopy(fFieldNames, 0, newFieldNames, 0, fStart);
+                fFieldNames = newFieldNames;
             }
             fWidth= N;
             fHashcode= -1;
@@ -422,6 +438,10 @@ public class TypeFactory {
              	throw new TypeDeclarationException("Can not redeclare type " + old + " with " + superType);
             }
         	 
+            if (!isIdentifier(name)) {
+            	throw new TypeDeclarationException("This is not a valid identifier: " + name);
+            }
+            
             NamedType nt= new NamedType(name, superType);
             fCache.put(nt, nt);
             
@@ -431,9 +451,62 @@ public class TypeFactory {
         }
         return (NamedType) result;
     }
+    
+    public TreeSortType treeSortType(String name) throws TypeDeclarationException {
+    	sProtoTreeSortType.fName = name;
+    	
+    	Type result= fCache.get(sProtoTreeSortType);
+
+        if (result == null) {
+            if (!isIdentifier(name)) {
+            	throw new TypeDeclarationException("This is not a valid identifier: " + name);
+            }
+            
+            TreeSortType nt= new TreeSortType(name);
+            fCache.put(nt, nt);
+            
+            fSignatures.put(nt, new LinkedList<TreeNodeType>());
+            result= nt;
+        }
+        
+        return (TreeSortType) result;
+    }
+    
+    public TreeNodeType treeType(String name, TupleType children, TreeSortType nodeType) {
+    	sProtoTreeType.fName = name;
+    	sProtoTreeType.fChildrenTypes = children;
+    	sProtoTreeType.fNodeType = nodeType;
+    	
+    	Type result = fCache.get(sProtoTreeType);
+    	
+    	if (result == null) {
+			result = new TreeNodeType(name, children, nodeType);
+			fCache.put(result, result);
+
+			List<TreeNodeType> signature = fSignatures.get(nodeType);
+			if (signature == null) {
+				throw new TypeDeclarationException("Unknown tree sort type: " + nodeType);
+			}
+			signature.add((TreeNodeType) result);
+			fSignatures.put(nodeType, signature);
+		}
+    	
+    	return (TreeNodeType) result;
+    }
 
     public NamedType lookup(String name) {
         return fNamedTypes.get(name);
+    }
+    
+    /**
+     * Returns all alternative ways of constructing a certain type name using
+     * a tree type.
+     * 
+     * @param type
+     * @return all tree node types that construct the given type
+     */
+    public List<TreeNodeType> signature(TreeSortType type) {
+    	return fSignatures.get(type);
     }
 
     public ListType listType(Type type) {
@@ -445,6 +518,19 @@ public class TypeFactory {
             fCache.put(result, result);
         }
         return (ListType) result;
+	}
+    
+    public MapType mapType(Type key, Type value) {
+    	sProtoMap.fKeyType = key;
+    	sProtoMap.fValueType = value;
+		Type result= fCache.get(sProtoMap);
+
+        if (result == null) {
+            result= new MapType(key, value);
+            fCache.put(result, result);
+        }
+        
+        return (MapType) result;
 	}
 
 	/*package*/ TupleType tupleCompose(TupleType type, TupleType other) {
@@ -476,4 +562,35 @@ public class TypeFactory {
 		
 		return relType(getOrCreateTuple(N, fieldTypes));
 	}
+	
+	/**
+	 * Checks to see if a string is a valid PDB identifier
+	 * 
+	 * @param str
+	 * @return
+	 */
+	/* package */ static boolean isIdentifier(String str) {
+		byte[] contents = str.getBytes();
+
+		if (str.length() == 0) {
+			return false;
+		}
+
+		if (!Character.isJavaIdentifierStart(contents[0])) {
+			return false;
+		}
+
+		if (str.length() > 1) {
+			for (int i = 1; i < contents.length; i++) {
+				if (!Character.isJavaIdentifierPart(contents[i]) &&
+					contents[i] != '.') {
+					return false;
+				}
+			}
+		}
+
+		return true;
+	}
+
+	
 }
