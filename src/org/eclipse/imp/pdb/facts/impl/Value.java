@@ -12,11 +12,16 @@
 
 package org.eclipse.imp.pdb.facts.impl;
 
+import java.util.LinkedList;
+
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public abstract class Value implements IValue {
-    /**
+    private static final LinkedList<IValue> sEmptyIterable = new LinkedList<IValue>();
+    
+	/**
      * The type of this value
      */
     protected final Type fType;
@@ -37,5 +42,9 @@ public abstract class Value implements IValue {
 	 */
     public Type getBaseType() {
     	return fType.getBaseType();
+    }
+    
+    public Iterable<IValue> getChildren() {
+    	return sEmptyIterable;
     }
 }

@@ -6,25 +6,22 @@
 * http://www.eclipse.org/legal/epl-v10.html
 *
 * Contributors:
-*    Robert Fuhrer (rfuhrer@watson.ibm.com) - initial API and implementation
+*    jurgen@vinju.org
 
 *******************************************************************************/
-
 package org.eclipse.imp.pdb.facts;
 
-import org.eclipse.imp.pdb.facts.type.Type;
+public interface IVisitable {
 
-
-public interface IValue extends IVisitable {
-	/** 
-	 * @return the Type of a value
-	 */
-    Type getType();
+	/**
+     * Execute the @see IValueVisitor on the current node
+     * 
+     * @param
+     */
+    IValue accept(IValueVisitor v);
     
     /**
-     * @return the smallest super type of getType() that is not a named type.
+     * Provide a @see Iterable for the children of this node
      */
-    Type getBaseType();
-    
-    
+    Iterable<IValue> getChildren();
 }
