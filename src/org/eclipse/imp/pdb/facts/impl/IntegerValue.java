@@ -13,6 +13,8 @@
 package org.eclipse.imp.pdb.facts.impl;
 
 import org.eclipse.imp.pdb.facts.IInteger;
+import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
@@ -49,5 +51,9 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
     @Override
     public int hashCode() {
     	return fValue;
+    }
+    
+    public IValue accept(IValueVisitor v) {
+    	return v.visitInteger(this);
     }
 }

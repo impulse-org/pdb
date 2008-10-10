@@ -13,6 +13,8 @@
 package org.eclipse.imp.pdb.facts.impl;
 
 import org.eclipse.imp.pdb.facts.ISourceRange;
+import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
@@ -98,5 +100,9 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
 	public int hashCode() {
 		return 24551 + 2 * fStartOffset + 3 * fLength + 5 * fStartLine + 7 * fEndLine
 				+ 11 * fStartCol + 13 * fEndCol;
+	}
+	
+	public IValue accept(IValueVisitor v) {
+		return v.visitSourceRange(this);
 	}
 }

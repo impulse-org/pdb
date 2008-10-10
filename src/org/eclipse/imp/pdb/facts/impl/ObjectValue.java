@@ -13,6 +13,8 @@
 package org.eclipse.imp.pdb.facts.impl;
 
 import org.eclipse.imp.pdb.facts.IObject;
+import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public class ObjectValue<T> extends Value implements IObject<T> {
@@ -25,5 +27,9 @@ public class ObjectValue<T> extends Value implements IObject<T> {
     
 	public T getValue() {
 		return fValue;
+	}
+	
+	public IValue accept(IValueVisitor v) {
+		return v.visitObject(this);
 	}
 }
