@@ -23,6 +23,7 @@ import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ISetWriter;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -523,5 +524,32 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		Relation other = (Relation) o;
 		
 		return fTuples.equals(other.fTuples);
+	}
+	
+	public IValue accept(IValueVisitor v) {
+		return v.visitRelation(this);
+	}
+	
+	@Override
+	public Iterable<IValue> getChildren() {
+		return new Iterable<IValue>() {
+			public Iterator<IValue> iterator() {
+				return new Iterator<IValue>() {
+					Iterator<ITuple> it = fTuples.iterator();
+					
+					public boolean hasNext() {
+						return it.hasNext();
+					}
+
+					public IValue next() {
+						return it.next();
+					}
+
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				};
+			}
+		};
 	}
 }

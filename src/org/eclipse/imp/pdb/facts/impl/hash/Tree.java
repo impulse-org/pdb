@@ -72,7 +72,7 @@ public class Tree extends Value implements ITree {
 	}
 
 	public Iterable<IValue> getChildren() {
-		return fChildren;
+		return this;
 	}
 
 	public TupleType getChildrenTypes() {
@@ -102,4 +102,6 @@ public class Tree extends Value implements ITree {
 	public Iterator<IValue> iterator() {
 		return fChildren.iterator();
 	}
+	
+	
 }

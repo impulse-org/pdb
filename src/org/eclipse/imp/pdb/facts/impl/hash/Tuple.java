@@ -128,4 +128,9 @@ class Tuple extends Value implements ITuple {
     public IValue accept(IValueVisitor v) {
     	return v.visitTuple(this);
     }
+    
+    @Override
+    public Iterable<IValue> getChildren() {
+    	return this;
+    }
 }

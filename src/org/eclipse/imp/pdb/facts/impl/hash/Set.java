@@ -22,6 +22,7 @@ import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ISetWriter;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -356,5 +357,14 @@ class Set extends WritableValue<ISetWriter> implements ISet {
 
 	public IRelation union(IRelation rel) throws FactTypeError {
 		return rel.union(this);
+	}
+	
+	public IValue accept(IValueVisitor v) {
+		return v.visitSet(this);
+	}
+	
+	@Override
+	public Iterable<IValue> getChildren() {
+		return this;
 	}
 }
