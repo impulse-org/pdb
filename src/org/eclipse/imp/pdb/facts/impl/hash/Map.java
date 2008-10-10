@@ -94,6 +94,42 @@ class Map extends WritableValue<IMapWriter> implements IMap {
 		return fMap.keySet().iterator();
 	}
 
+	/**
+	 * Does something different than iterator, namely also visits the values
+	 */
+	@Override
+	public Iterable<IValue> getChildren() {
+		return new Iterable<IValue>() {
+			public Iterator<IValue> iterator() {
+				return new Iterator<IValue>() {
+					IValue value;
+					Iterator<IValue> keyIt = iterator();
+					
+					public boolean hasNext() {
+						return value != null || keyIt.hasNext();
+					}
+
+					public IValue next() {
+						if (value != null) {
+							IValue tmp = value;
+							value = null;
+							return tmp;
+						}
+						else {
+							IValue tmp = keyIt.next();
+							value = fMap.get(tmp);
+							return tmp;
+						}
+					}
+
+					public void remove() {
+						throw new UnsupportedOperationException();
+					}
+				};
+			}
+		};
+	}
+	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{ ");
