@@ -12,8 +12,11 @@
 
 package org.eclipse.imp.pdb.facts.type;
 
-public class TupleType extends Type {
+import java.util.Iterator;
+
+public class TupleType extends Type implements Iterable<Type> {
     protected Type[] fFieldTypes;
+    protected String[] fFieldNames;
     protected int fHashcode= -1;
 
     /**
@@ -28,6 +31,20 @@ public class TupleType extends Type {
         }
     }
 
+    /**
+     * Creates a tuple type with the given field types and names. Copies the arrays.
+     */
+    /*package*/ TupleType(int len, int start, Type[] fieldTypes,String[] fieldNames) {
+       this(len, start, fieldTypes);
+       if (fieldNames != null && len > 0 && fieldTypes.length == fieldNames.length) {
+    	   fFieldNames = new String[len];
+    	   System.arraycopy(fieldNames, start, fFieldNames, 0, len);
+       }
+       else {
+    	   throw new IllegalArgumentException("Unequal amounts of field names and field types");
+       }
+    }
+    
     @Override
     public boolean isTupleType() {
     	return true;
@@ -37,6 +54,24 @@ public class TupleType extends Type {
         return fFieldTypes[i];
     }
 
+    public Type getFieldType(String fieldName) {
+    	return getFieldType(getFieldIndex(fieldName));
+    }
+    
+    public int getFieldIndex(String fieldName) {
+    	if (fFieldNames != null) {
+    		for (int i = 0; i < fFieldNames.length; i++) {
+    			if (fFieldNames[i].equals(fieldName)) {
+    				return i;
+    			}
+    		}
+    		
+    		throw new FactTypeError("no field exists with this name: " + fieldName);
+    	}
+    	
+    	throw new FactTypeError("tuple type has no labels");
+    }
+    
     public int getArity() {
         return fFieldTypes.length;
     }
@@ -138,4 +173,22 @@ public class TupleType extends Type {
         sb.append(">");
         return sb.toString();
     }
+
+	public Iterator<Type> iterator() {
+		return new Iterator<Type>() {
+			private int cursor = 0;
+
+			public boolean hasNext() {
+				return cursor < fFieldTypes.length;
+			}
+
+			public Type next() {
+				return fFieldTypes[cursor++];
+			}
+
+			public void remove() {
+				throw new UnsupportedOperationException();
+			}
+		};
+	}
 }

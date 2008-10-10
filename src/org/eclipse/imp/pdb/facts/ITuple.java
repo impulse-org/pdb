@@ -14,6 +14,8 @@ package org.eclipse.imp.pdb.facts;
 
 public abstract interface ITuple extends Iterable<IValue>, IValue {
     public IValue get(int i);
+    
+    public IValue get(String label);
 
     public int arity();
 

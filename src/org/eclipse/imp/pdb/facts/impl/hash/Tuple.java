@@ -16,7 +16,9 @@ import java.util.Iterator;
 
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.Value;
+import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
@@ -67,6 +69,11 @@ class Tuple extends Value implements ITuple {
     public IValue get(int i) {
         return fElements[i];
     }
+    
+    public IValue get(String label) {
+		return fElements[((TupleType) fType).getFieldIndex(label)];
+	}
+
 
     public Iterator<IValue> iterator() {
         return new Iterator<IValue>() {
@@ -116,5 +123,9 @@ class Tuple extends Value implements ITuple {
     @Override
     public int hashCode() {
         return 1;
+    }
+    
+    public IValue accept(IValueVisitor v) {
+    	return v.visitTuple(this);
     }
 }
