@@ -44,9 +44,12 @@ public class Tree extends Value implements ITree {
 		super(type);
 		fType = type;
 		fFactory = factory;
-		fChildren = new ArrayList<IValue>(children.length);
-		for (IValue child : children) {
-			fChildren.add(child);
+		
+		if (children != null) {
+		  fChildren = new ArrayList<IValue>(children.length);
+		  for (IValue child : children) {
+		  	fChildren.add(child);
+		  }
 		}
 	}
 
@@ -91,7 +94,7 @@ public class Tree extends Value implements ITree {
 	public  ITree set(int i, IValue newChild) {
 		Tree tmp = new Tree(fFactory, fType, null);
 	    tmp.fChildren = (ArrayList<IValue>) fChildren.clone();
-		fChildren.set(i, newChild);
+		tmp.fChildren.set(i, newChild);
 		return tmp;
 	}
 	
@@ -103,5 +106,33 @@ public class Tree extends Value implements ITree {
 		return fChildren.iterator();
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append(fType.getName());
+
+		if (fChildren.size() > 0) {
+			builder.append("(");
+			Iterator<IValue> it = iterator();
+			while (it.hasNext()) {
+				builder.append(it.next().toString());
+				if (it.hasNext()) {
+					builder.append(",");
+				}
+			}
+			builder.append(")");
+		}
+		return builder.toString();
+	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Tree) {
+			Tree other = (Tree) obj;
+		   return fType == 	other.fType && fChildren.equals(other.fChildren);
+		}
+		else {
+			return false;
+		}
+	}
 }
