@@ -21,6 +21,7 @@ import org.eclipse.imp.pdb.facts.IRelation;
 import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -196,5 +197,14 @@ public class List extends WritableValue<IListWriter> implements IList {
 		}
 		List other = (List) o;
 		return fList.equals(other.fList);
+	}
+	
+	public IValue accept(IValueVisitor v) {
+		return v.visitList(this);
+	}
+	
+	@Override
+	public Iterable<IValue> getChildren() {
+		return fList;
 	}
 }
