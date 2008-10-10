@@ -23,7 +23,7 @@ public class TupleType extends Type implements Iterable<Type> {
      * Creates a tuple type with the given field types. Copies the array.
      */
     /*package*/ TupleType(int len, int start, Type[] fieldTypes) {
-        if (fieldTypes != null && len > 0) {
+        if (fieldTypes != null && len >= 0) {
             fFieldTypes= new Type[len];
             System.arraycopy(fieldTypes, start, fFieldTypes, 0, len);
         } else {
@@ -36,7 +36,7 @@ public class TupleType extends Type implements Iterable<Type> {
      */
     /*package*/ TupleType(int len, int start, Type[] fieldTypes,String[] fieldNames) {
        this(len, start, fieldTypes);
-       if (fieldNames != null && len > 0 && fieldTypes.length == fieldNames.length) {
+       if (fieldNames != null && len >= 0 && fieldTypes.length == fieldNames.length) {
     	   fFieldNames = new String[len];
     	   System.arraycopy(fieldNames, start, fFieldNames, 0, len);
        }

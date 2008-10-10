@@ -207,6 +207,11 @@ public class TypeFactory {
     	return getOrCreateTuple(N, fieldTypes);
     }
     
+    public TupleType tupleEmpty() {
+    	Type[] fieldTypes = sProtoTuple.getFieldTypes(0);
+    	return getOrCreateTuple(0, fieldTypes);
+    }
+    
     public TupleType tupleTypeOf(Type fieldType1) {
         Type[] fieldTypes= sProtoTuple.getFieldTypes(1);
         fieldTypes[0]= fieldType1;
@@ -492,6 +497,10 @@ public class TypeFactory {
 		}
     	
     	return (TreeNodeType) result;
+    }
+    
+    public TreeNodeType treeType(String name, TreeSortType nodeType) {
+    	return treeType(name, TypeFactory.getInstance().tupleEmpty(), nodeType);
     }
 
     public NamedType lookup(String name) {
