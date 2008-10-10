@@ -22,4 +22,8 @@ public class FactTypeError extends RuntimeException {
     public FactTypeError(String reason) {
     	super(reason);
     }
+    
+    public FactTypeError(String reason, Throwable cause) {
+    	super(reason, cause);
+    }
 }
