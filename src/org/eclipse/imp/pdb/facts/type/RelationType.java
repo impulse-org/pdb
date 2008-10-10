@@ -47,6 +47,10 @@ public class RelationType extends Type {
     	return fTupleType.getFieldType(i);
     }
     
+    public TupleType getFieldTypes() {
+    	return fTupleType;
+    }
+    
     @Override
     public boolean isRelationType() {
     	return true;
