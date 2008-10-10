@@ -15,7 +15,6 @@ package org.eclipse.imp.pdb.facts.impl;
 import java.util.LinkedList;
 
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public abstract class Value implements IValue {
