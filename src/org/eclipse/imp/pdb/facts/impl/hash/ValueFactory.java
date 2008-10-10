@@ -18,12 +18,14 @@ import org.eclipse.imp.pdb.facts.IRelation;
 import org.eclipse.imp.pdb.facts.IRelationWriter;
 import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ISetWriter;
+import org.eclipse.imp.pdb.facts.ITree;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.impl.BaseValueFactory;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.RelationType;
+import org.eclipse.imp.pdb.facts.type.TreeNodeType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
@@ -489,5 +491,16 @@ public class ValueFactory extends BaseValueFactory {
 		IValue[] tmp = new IValue[size];
 		System.arraycopy(elements, 0, tmp, 0, size);
 		return new Tuple(tmp);
+	}
+	
+	public ITree tree(TreeNodeType type, IValue[] children) {
+		return new Tree(this, type, children);
+	}
+	
+	public ITree tree(NamedType type, IValue[] children) {
+		if (!type.getBaseType().isTreeType()) {
+			throw new FactTypeError(type + " is not a tree type");
+		}
+		return new Tree(this, type, children);
 	}
 }
