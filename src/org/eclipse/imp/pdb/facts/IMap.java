@@ -30,4 +30,7 @@ public interface IMap extends Iterable<IValue>, IValue {
     public boolean containsKey(IValue key) throws FactTypeError ;
     
     public boolean containsValue(IValue value) throws FactTypeError ;
+    
+    // TODO add methods for union, intersection, etc.. manipulation and 
+    // construction of IMaps from other IMaps, and IMaps from sets or relations.
 }
