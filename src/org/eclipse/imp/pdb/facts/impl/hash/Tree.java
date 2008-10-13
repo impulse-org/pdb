@@ -145,4 +145,20 @@ public class Tree extends Value implements ITree {
 			return false;
 		}
 	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Tree tmp;
+		
+		if (getType() instanceof NamedType) {
+			tmp =  new Tree(fFactory, (NamedType) getType());
+		}
+		else {
+			tmp = new Tree(fFactory, (TreeNodeType) getType());
+		}
+		
+		// no need to clone children, since IValues are immutable
+		tmp.fChildren = fChildren;
+		return tmp;
+	}
 }

@@ -367,4 +367,29 @@ class Set extends WritableValue<ISetWriter> implements ISet {
 	public Iterable<IValue> getChildren() {
 		return this;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Set tmp;
+		
+		if (getType() instanceof NamedType) {
+		    tmp =  new Set((NamedType) getType());
+		}
+		else {
+			tmp = new Set((SetType) getType());
+		}
+	
+		// we don't have to clone fList if this instance is not mutable anymore,
+		// otherwise we certainly do, to prevent modification of the original list.
+		if (isMutable()) {
+			tmp.fSet = (HashSet<IValue>) fSet.clone();
+		}
+		else {
+			tmp.fSet = fSet;
+			tmp.getWriter().done();
+		}
+		
+		return tmp;
+	}
 }

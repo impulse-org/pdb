@@ -105,4 +105,14 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
 	public IValue accept(IValueVisitor v) {
 		return v.visitSourceRange(this);
 	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		if (getType() instanceof NamedType) {
+		  return new SourceRangeValue((NamedType) getType(), fStartOffset, fLength, fStartLine, fEndLine, fStartCol, fEndCol );
+		}
+		else {
+	      return new SourceRangeValue(fStartOffset, fLength, fStartLine, fEndLine, fStartCol, fEndCol );
+		}
+	}
 }

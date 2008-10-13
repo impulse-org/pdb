@@ -56,4 +56,9 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
     public IValue accept(IValueVisitor v) {
     	return v.visitString(this);
     }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+    	return new StringValue(fValue);
+    }
 }

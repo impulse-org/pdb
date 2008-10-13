@@ -65,4 +65,14 @@ import org.eclipse.imp.pdb.facts.type.TypeFactory;
     public IValue accept(IValueVisitor v) {
     	return v.visitSourceLocation(this);
     }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+    	if (getType() instanceof NamedType) {
+    	  return new SourceLocationValue((NamedType) getType(), fPath, fRange);
+    	}
+    	else {
+    		return new SourceLocationValue(fPath, fRange);
+    	}
+    }
 }

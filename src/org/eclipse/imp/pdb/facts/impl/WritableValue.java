@@ -29,6 +29,10 @@ public abstract class WritableValue<WriterT> extends Value {
 		fState = MutabilityState.Immutable;
 		fWriter = null;
 	}
+	
+	public final boolean isMutable() {
+		return fState == MutabilityState.Mutable;
+	}
 
 	public final WriterT getWriter() {
 		if (fState == MutabilityState.Mutable) {

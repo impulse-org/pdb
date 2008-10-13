@@ -32,4 +32,9 @@ public class ObjectValue<T> extends Value implements IObject<T> {
 	public IValue accept(IValueVisitor v) {
 		return v.visitObject(this);
 	}
+	
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		return new ObjectValue<T>(getType(), fValue);
+	}
 }

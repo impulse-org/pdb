@@ -133,4 +133,14 @@ class Tuple extends Value implements ITuple {
     public Iterable<IValue> getChildren() {
     	return this;
     }
+    
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+    	Tuple tmp = new Tuple(getType());
+    	
+    	// since tuples are immutable, no need to clone the elements
+    	tmp.fElements = fElements;
+    	
+    	return tmp;
+    }
 }

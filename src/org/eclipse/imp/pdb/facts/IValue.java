@@ -26,5 +26,26 @@ public interface IValue extends IVisitable {
      */
     Type getBaseType();
     
+    /**
+     * get the value of an annotation on this value
+     * @param label
+     * @return the value of the annotation labeled 'label' of this value, or null
+     *         if it does not exist
+     */
+    IValue getAnnotation(String label);
+
+    /**
+     * set an annotation on this value
+     * @param label
+     * @param value
+     * @return a new value with the annotation set
+     */
+    IValue setAnnotation(String label, IValue value);
     
+    /**
+     * determine whether a certain annotation is set on this value
+     * @param label
+     * @return true iff this value has an annotation with that label
+     */
+    boolean hasAnnotation(String label);
 }

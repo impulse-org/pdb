@@ -13,6 +13,7 @@
 package org.eclipse.imp.pdb.facts.impl.hash;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -88,7 +89,7 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		}
 	}
 
-	/*package*/ final java.util.Set<ITuple> fTuples = new HashSet<ITuple>();
+	/*package*/ java.util.HashSet<ITuple> fTuples = new HashSet<ITuple>();
 
 	/* package */Relation(NamedType relType) throws FactTypeError {
 		super(relType);
@@ -551,5 +552,30 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 				};
 			}
 		};
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Relation tmp;
+		
+		if (getType() instanceof NamedType) {
+		    tmp =  new Relation((NamedType) getType());
+		}
+		else {
+			tmp = new Relation((RelationType) getType());
+		}
+	
+		// we don't have to clone fList if this instance is not mutable anymore,
+		// otherwise we certainly do, to prevent modification of the original list.
+		if (isMutable()) {
+			tmp.fTuples = (HashSet<ITuple>) fTuples.clone();
+		}
+		else {
+			tmp.fTuples = fTuples;
+			tmp.getWriter().done();
+		}
+		
+		return tmp;
 	}
 }

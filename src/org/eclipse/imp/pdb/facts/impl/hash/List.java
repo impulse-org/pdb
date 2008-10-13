@@ -207,4 +207,29 @@ public class List extends WritableValue<IListWriter> implements IList {
 	public Iterable<IValue> getChildren() {
 		return fList;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		List tmp;
+		
+		if (getType() instanceof NamedType) {
+		    tmp =  new List((NamedType) getType());
+		}
+		else {
+			tmp = new List(getElementType());
+		}
+	
+		// we don't have to clone fList if this instance is not mutable anymore,
+		// otherwise we certainly do, to prevent modification of the original list.
+		if (isMutable()) {
+			tmp.fList = (LinkedList<IValue>) fList.clone();
+		}
+		else {
+			tmp.fList = fList;
+			tmp.getWriter().done();
+		}
+		
+		return tmp;
+	}
 }

@@ -14,6 +14,7 @@ package org.eclipse.imp.pdb.facts.impl.hash;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 import org.eclipse.imp.pdb.facts.IMap;
 import org.eclipse.imp.pdb.facts.IMapWriter;
@@ -66,12 +67,12 @@ class Map extends WritableValue<IMapWriter> implements IMap {
 		}
 	}
 
-	/* package */Map(SetType setType) {
-		super(setType);
+	/* package */Map(MapType mapType) {
+		super(mapType);
 	}
 	
-	/* package */Map(Type eltType) {
-		super(TypeFactory.getInstance().setTypeOf(eltType));
+	/* package */Map(Type keyType, Type valueType) {
+		super(TypeFactory.getInstance().mapType(keyType, valueType));
 	}
 
 	@Override
@@ -193,12 +194,37 @@ class Map extends WritableValue<IMapWriter> implements IMap {
 	}
 
 	public IMap put(IValue key, IValue value) throws FactTypeError {
-		Map result = new Map(getType());
+		Map result = new Map(getKeyType(), getValueType());
 		IMapWriter sw = result.getWriter();
 		sw.putAll(this);
 		sw.put(key, value);
 		sw.done();
 
 		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	protected Object clone() throws CloneNotSupportedException {
+		Map tmp;
+		
+		if (getType() instanceof NamedType) {
+		    tmp =  new Map((NamedType) getType());
+		}
+		else {
+			tmp = new Map(getKeyType(), getValueType());
+		}
+	
+		// we don't have to clone fList if this instance is not mutable anymore,
+		// otherwise we certainly do, to prevent modification of the original list.
+		if (isMutable()) {
+			tmp.fMap = (HashMap<IValue, IValue>) fMap.clone();
+		}
+		else {
+			tmp.fMap = fMap;
+			tmp.getWriter().done();
+		}
+		
+		return tmp;
 	}
 }

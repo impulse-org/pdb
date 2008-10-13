@@ -12,13 +12,16 @@
 
 package org.eclipse.imp.pdb.facts.impl;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 
 import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public abstract class Value implements IValue {
     private static final LinkedList<IValue> sEmptyIterable = new LinkedList<IValue>();
+    protected Map<String, IValue> fAnnotations = new HashMap<String, IValue>();
     
 	/**
      * The type of this value
@@ -29,7 +32,7 @@ public abstract class Value implements IValue {
     	fType= type;
     }
 
-    /**
+	/**
      * @return the type of this value
      */
     public Type getType() {
@@ -46,4 +49,30 @@ public abstract class Value implements IValue {
     public Iterable<IValue> getChildren() {
     	return sEmptyIterable;
     }
+    
+    public boolean hasAnnotation(String label) {
+    	return fAnnotations.containsKey(label);
+    }
+    
+    public IValue setAnnotation(String label, IValue value) {
+    	Value clone;
+		try {
+			clone = (Value) clone();
+			clone.fAnnotations.put(label, value);
+	    	return clone;
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException("Internal error: all IValues should implement clone method", e);
+		}
+    }
+    
+    public IValue getAnnotation(String label) {
+    	return fAnnotations.get(label);
+    }
+    
+    /**
+     * clone must be implemented in order to make setAnnotation implementable
+     * without mutating the original object.
+     */
+    @Override
+    protected abstract Object clone() throws CloneNotSupportedException;
 }
