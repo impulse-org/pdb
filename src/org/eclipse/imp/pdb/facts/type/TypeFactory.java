@@ -149,7 +149,12 @@ public class TypeFactory {
             setWidth(N);
             return fFieldTypes;
         }
-
+        
+        /*package*/ String[] getFieldNames(int N) {
+        	setWidth(N);
+        	return fFieldNames;
+        }
+        
         @Override
         public int hashCode() {
             if (fHashcode == -1) {
@@ -193,6 +198,17 @@ public class TypeFactory {
         }
         return (TupleType) result;
     }
+    
+
+    private TupleType getOrCreateTuple(int size, Type[] fieldTypes, String[] fieldNames) {
+    	Type result= fCache.get(sProtoTuple);
+
+        if (result == null) {
+            result= new TupleType(size, sProtoTuple.fStart, fieldTypes, fieldNames);
+            fCache.put(result, result);
+        }
+        return (TupleType) result;
+    }
 
     /*package */ TupleType tupleProduct(TupleType t1, TupleType t2) {
     	int N = t1.getArity() + t2.getArity();
@@ -217,6 +233,14 @@ public class TypeFactory {
         fieldTypes[0]= fieldType1;
         return getOrCreateTuple(1, fieldTypes);
     }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(1);
+        fieldTypes[0]= fieldType1;
+        String[] fieldNames = sProtoTuple.getFieldNames(1);
+        fieldNames[0] = label1;
+        return getOrCreateTuple(1, fieldTypes, fieldNames);
+    }
 
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2) {
         Type[] fieldTypes= sProtoTuple.getFieldTypes(2);
@@ -224,6 +248,17 @@ public class TypeFactory {
         fieldTypes[1]= fieldType2;
         return getOrCreateTuple(2, fieldTypes);
     }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(2);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        String[] fieldNames = sProtoTuple.getFieldNames(2);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        return getOrCreateTuple(1, fieldTypes, fieldNames);
+    }
+
 
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2, Type fieldType3) {
         Type[] fieldTypes= sProtoTuple.getFieldTypes(3);
@@ -231,6 +266,18 @@ public class TypeFactory {
         fieldTypes[1]= fieldType2;
         fieldTypes[2]= fieldType3;
         return getOrCreateTuple(3, fieldTypes);
+    }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2,Type fieldType3, String label3) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(3);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        fieldTypes[2]= fieldType3;
+        String[] fieldNames = sProtoTuple.getFieldNames(3);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        fieldNames[3]=  label3;
+        return getOrCreateTuple(1, fieldTypes, fieldNames);
     }
 
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2, Type fieldType3, Type fieldType4) {
@@ -242,6 +289,21 @@ public class TypeFactory {
         return getOrCreateTuple(4, fieldTypes);
     }
 
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2,Type fieldType3, String label3, Type fieldType4, String label4) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(4);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        fieldTypes[2]= fieldType3;
+        fieldTypes[3]= fieldType4;
+        String[] fieldNames = sProtoTuple.getFieldNames(4);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        fieldNames[2]=  label3;
+        fieldNames[3]=  label4;
+        
+        return getOrCreateTuple(4, fieldTypes, fieldNames);
+    }
+    
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2, Type fieldType3, Type fieldType4, Type fieldType5) {
         Type[] fieldTypes= sProtoTuple.getFieldTypes(5);
         fieldTypes[0]= fieldType1;
@@ -250,6 +312,23 @@ public class TypeFactory {
         fieldTypes[3]= fieldType4;
         fieldTypes[4]= fieldType5;
         return getOrCreateTuple(5, fieldTypes);
+    }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2,Type fieldType3, String label3, Type fieldType4, String label4, Type fieldType5, String label5) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(4);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        fieldTypes[2]= fieldType3;
+        fieldTypes[3]= fieldType4;
+        fieldTypes[4]= fieldType5;
+        String[] fieldNames = sProtoTuple.getFieldNames(4);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        fieldNames[2]=  label3;
+        fieldNames[3]=  label4;
+        fieldNames[4]=  label5;
+        
+        return getOrCreateTuple(4, fieldTypes, fieldNames);
     }
 
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2, Type fieldType3, Type fieldType4, Type fieldType5, Type fieldType6) {
@@ -262,6 +341,25 @@ public class TypeFactory {
         fieldTypes[5]= fieldType6;
         return getOrCreateTuple(6, fieldTypes);
     }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2,Type fieldType3, String label3, Type fieldType4, String label4, Type fieldType5, String label5, Type fieldType6, String label6) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(4);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        fieldTypes[2]= fieldType3;
+        fieldTypes[3]= fieldType4;
+        fieldTypes[4]= fieldType5;
+        fieldTypes[5]= fieldType6;
+        String[] fieldNames = sProtoTuple.getFieldNames(4);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        fieldNames[2]=  label3;
+        fieldNames[3]=  label4;
+        fieldNames[4]=  label5;
+        fieldNames[5]=  label6;
+        
+        return getOrCreateTuple(4, fieldTypes, fieldNames);
+    }
 
     public TupleType tupleTypeOf(Type fieldType1, Type fieldType2, Type fieldType3, Type fieldType4, Type fieldType5, Type fieldType6, Type fieldType7) {
         Type[] fieldTypes= sProtoTuple.getFieldTypes(7);
@@ -273,6 +371,27 @@ public class TypeFactory {
         fieldTypes[5]= fieldType6;
         fieldTypes[6]= fieldType7;
         return getOrCreateTuple(7, fieldTypes);
+    }
+    
+    public TupleType tupleTypeOf(Type fieldType1, String label1, Type fieldType2, String label2,Type fieldType3, String label3, Type fieldType4, String label4, Type fieldType5, String label5, Type fieldType6, String label6, Type fieldType7, String label7) {
+        Type[] fieldTypes= sProtoTuple.getFieldTypes(4);
+        fieldTypes[0]= fieldType1;
+        fieldTypes[1]= fieldType2;
+        fieldTypes[2]= fieldType3;
+        fieldTypes[3]= fieldType4;
+        fieldTypes[4]= fieldType5;
+        fieldTypes[5]= fieldType6;
+        fieldTypes[6]= fieldType7;
+        String[] fieldNames = sProtoTuple.getFieldNames(4);
+        fieldNames[0] = label1;
+        fieldNames[1]=  label2;
+        fieldNames[2]=  label3;
+        fieldNames[3]=  label4;
+        fieldNames[4]=  label5;
+        fieldNames[5]=  label6;
+        fieldNames[6]=  label7;
+        
+        return getOrCreateTuple(4, fieldTypes, fieldNames);
     }
 
     public TupleType tupleTypeOf(List<Type> fieldTypes) {
@@ -477,7 +596,7 @@ public class TypeFactory {
         return (TreeSortType) result;
     }
     
-    public TreeNodeType treeType(String name, TupleType children, TreeSortType nodeType) {
+    public TreeNodeType treeType(TreeSortType nodeType, String name, TupleType children) {
     	sProtoTreeType.fName = name;
     	sProtoTreeType.fChildrenTypes = children;
     	sProtoTreeType.fNodeType = nodeType;
@@ -499,8 +618,71 @@ public class TypeFactory {
     	return (TreeNodeType) result;
     }
     
-    public TreeNodeType treeType(String name, TreeSortType nodeType) {
-    	return treeType(name, TypeFactory.getInstance().tupleEmpty(), nodeType);
+    public TreeNodeType treeType(TreeSortType nodeType, String name) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleEmpty());
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2, Type arg3) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2, arg3));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2, Type arg3, String label3) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2, arg3, label3));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2, Type arg3, Type arg4) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2, arg3, arg4));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2, Type arg3, String label3, Type arg4, String label4) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2, arg3, label3, arg4, label4));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2, Type arg3, Type arg4, Type arg5) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2, arg3, arg4, arg5));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2, Type arg3, String label3, Type arg4, String label4, Type arg5, String label5) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2, arg3, label3, arg4, label4, arg5, label5));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2, Type arg3, Type arg4, Type arg5, Type arg6) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2, arg3, arg4, arg5));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2, Type arg3, String label3, Type arg4, String label4, Type arg5, String label5, Type arg6, String label6) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2, arg3, label3, arg4, label4, arg5, label5, arg6, label6));
+    }
+    
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, Type arg2, Type arg3, Type arg4, Type arg5, Type arg6, Type arg7) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, arg2, arg3, arg4, arg5));
+    	
+    }
+   
+    public TreeNodeType treeType(TreeSortType nodeType, String name, Type arg1, String label1, Type arg2, String label2, Type arg3, String label3, Type arg4, String label4, Type arg5, String label5, Type arg6, String label6, Type arg7, String label7) {
+    	return treeType(nodeType, name, TypeFactory.getInstance().tupleTypeOf(arg1, label1, arg2, label2, arg3, label3, arg4, label4, arg5, label5, arg6, label6, arg7, label7));
     }
 
     public NamedType lookup(String name) {
