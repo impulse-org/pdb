@@ -503,4 +503,80 @@ public class ValueFactory extends BaseValueFactory {
 		}
 		return new Tree(this, type, children);
 	}
+
+	public ITree tree(TreeNodeType type) {
+		return new Tree(this, type);
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1) {
+		return new Tree(this, type, new IValue[] { child1 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2) {
+		return new Tree(this, type, new IValue[] { child1, child2 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2,
+			IValue child3) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2,
+			IValue child3, IValue child4) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5, IValue child6) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5, child6 });
+	}
+
+	public ITree tree(TreeNodeType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5, IValue child6,
+			IValue child7) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5, child6, child7 });
+	}
+
+	public ITree tree(NamedType type) {
+		return new Tree(this, type);
+	}
+
+	public ITree tree(NamedType type, IValue child1) {
+		return new Tree(this, type, new IValue[] { child1 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2) {
+		return new Tree(this, type, new IValue[] { child1, child2 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2,
+			IValue child3) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2,
+			IValue child3, IValue child4) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5, IValue child6) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5, child6 });
+	}
+
+	public ITree tree(NamedType type, IValue child1, IValue child2,
+			IValue child3, IValue child4, IValue child5, IValue child6,
+			IValue child7) {
+		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5, child6, child7 });
+	}
 }

@@ -45,14 +45,24 @@ public class Tree extends Value implements ITree {
 		fType = type;
 		fFactory = factory;
 		
-		if (children != null) {
-		  fChildren = new ArrayList<IValue>(children.length);
-		  for (IValue child : children) {
-		  	fChildren.add(child);
-		  }
+		fChildren = new ArrayList<IValue>(children.length);
+		for (IValue child : children) {
+			fChildren.add(child);
 		}
 	}
 
+	public Tree(IValueFactory factory, TreeNodeType type) {
+		super(type);
+		fType = type;
+		fFactory = factory;
+		fChildren = new ArrayList<IValue>();
+	}
+
+	public Tree(IValueFactory factory, NamedType type) {
+		this(factory, (TreeNodeType) type.getBaseType());
+	}
+
+	
 	public IValue accept(IValueVisitor v) {
 		return v.visitTree(this);
 	}

@@ -129,10 +129,28 @@ public interface IValueFactory {
      * 
      * @param type     describes the type of the node, its name and its children
      * @param children the children of the node
-     * @return
+     * @return a tree 
      */
     public ITree tree(TreeNodeType type, IValue[] children);
     public ITree tree(NamedType type, IValue[] children);
+    
+    public ITree tree(TreeNodeType type);
+    public ITree tree(TreeNodeType type, IValue child1);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6);
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7);
+    
+    public ITree tree(NamedType type);
+    public ITree tree(NamedType type, IValue child1);
+    public ITree tree(NamedType type, IValue child1, IValue child2);
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3);
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4);
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5);
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6);
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7);
     
     /**
      * @param setType the type of the set
