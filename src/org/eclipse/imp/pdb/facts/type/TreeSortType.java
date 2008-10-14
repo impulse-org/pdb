@@ -11,8 +11,6 @@
 
 package org.eclipse.imp.pdb.facts.type;
 
-import com.sun.xml.internal.bind.v2.runtime.RuntimeUtil.ToStringAdapter;
-
 /**
  * A Tree Sort is an algebraic sort. A sort is produced by constructors, @see TreeType.
  * There can be many constructors for a single sort.
