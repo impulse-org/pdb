@@ -12,6 +12,8 @@
 
 package org.eclipse.imp.pdb.facts;
 
+import java.util.List;
+
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TreeNodeType;
@@ -131,26 +133,27 @@ public interface IValueFactory {
      * @param children the children of the node
      * @return a tree 
      */
-    public ITree tree(TreeNodeType type, IValue[] children);
-    public ITree tree(NamedType type, IValue[] children);
+    public ITree tree(TreeNodeType type, IValue[] children) throws FactTypeError;
+    public ITree tree(NamedType type, IValue[] children)  throws FactTypeError;
+    public IValue tree(TreeNodeType type, List<IValue> children)  throws FactTypeError;
     
-    public ITree tree(TreeNodeType type);
-    public ITree tree(TreeNodeType type, IValue child1);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6);
-    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7);
+    public ITree tree(TreeNodeType type) ;
+    public ITree tree(TreeNodeType type, IValue child1)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6)  throws FactTypeError;
+    public ITree tree(TreeNodeType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7) throws FactTypeError;
     
     public ITree tree(NamedType type);
-    public ITree tree(NamedType type, IValue child1);
-    public ITree tree(NamedType type, IValue child1, IValue child2);
-    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3);
-    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4);
-    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5);
-    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6);
-    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7);
+    public ITree tree(NamedType type, IValue child1)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6)  throws FactTypeError;
+    public ITree tree(NamedType type, IValue child1, IValue child2, IValue child3, IValue child4, IValue child5, IValue child6, IValue child7)  throws FactTypeError;
     
     /**
      * @param setType the type of the set
@@ -309,5 +312,5 @@ public interface IValueFactory {
      * @return a relation containing the tuple {a , b, c, d, e, f, g} with type RelationType[t1,...,tn]
      * @throws FactTypeError if the arities of the tuples are not equal
      */
-    public IRelation relationWith(ITuple a, ITuple b, ITuple c, ITuple d, ITuple e, ITuple f, ITuple g)  throws FactTypeError;
+    public IRelation relationWith(ITuple a, ITuple b, ITuple c, ITuple d, ITuple e, ITuple f, ITuple g)  throws FactTypeError;	
 }

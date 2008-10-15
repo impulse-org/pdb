@@ -699,6 +699,16 @@ public class TypeFactory {
     public List<TreeNodeType> signature(TreeSortType type) {
     	return fSignatures.get(type);
     }
+    
+    public TreeNodeType signatureGet(TreeSortType type, String constructorName) {
+    	for (TreeNodeType node : fSignatures.get(type)) {
+    		if (node.getName().equals(constructorName)) {
+    			return node;
+    		}
+    	}
+    	
+    	throw new FactTypeError("Type does not have this constructor name:" + constructorName);
+    }
 
     public ListType listType(Type type) {
 		sProtoListType.fEltType = type;

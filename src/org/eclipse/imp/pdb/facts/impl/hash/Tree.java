@@ -13,6 +13,7 @@ package org.eclipse.imp.pdb.facts.impl.hash;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.eclipse.imp.pdb.facts.ITree;
 import org.eclipse.imp.pdb.facts.IValue;
@@ -63,6 +64,15 @@ public class Tree extends Value implements ITree {
 	}
 
 	
+	public Tree(ValueFactory factory, TreeNodeType type, List<IValue> children) {
+		super(type);
+		fType = type;
+		fFactory = factory;
+		
+		fChildren = new ArrayList<IValue>();
+		fChildren.addAll(children);
+	}
+
 	public IValue accept(IValueVisitor v) {
 		return v.visitTree(this);
 	}

@@ -63,7 +63,10 @@ public class TreeNodeType extends Type {
 
 	@Override
 	public boolean isSubtypeOf(Type other) {
-		if (other.equals(fNodeType)) {
+		if (other == this) {
+			return true;
+		}
+		else if (other == fNodeType) {
 			return true;
 		}
 		else {

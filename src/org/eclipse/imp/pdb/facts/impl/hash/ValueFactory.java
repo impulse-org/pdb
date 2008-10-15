@@ -504,6 +504,14 @@ public class ValueFactory extends BaseValueFactory {
 		return new Tree(this, type, children);
 	}
 
+	public ITree tree(TreeNodeType type, java.util.List<IValue> children) {
+		if (!type.getBaseType().isTreeType()) {
+			throw new FactTypeError(type + " is not a tree type");
+		}
+		return new Tree(this, type, children);
+	}
+
+	
 	public ITree tree(TreeNodeType type) {
 		return new Tree(this, type);
 	}
