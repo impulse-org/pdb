@@ -12,8 +12,9 @@
 
 package org.eclipse.imp.pdb.facts;
 
-import org.eclipse.imp.pdb.facts.type.TreeSortType;
+import org.eclipse.imp.pdb.facts.type.TreeNodeType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
+import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
 /**
  * Typed trees. Trees are typed according to an algebraic signature (grammar).
@@ -29,7 +30,7 @@ public interface ITree extends IValue, Iterable<IValue> {
 	public ITree  set(String label, IValue newChild);
 	public int arity();
 	public String getName();
-	public TreeSortType getTreeSortType();
+	public TreeNodeType getTreeNodeType();
 	public TupleType getChildrenTypes();
 	public Iterable<IValue> getChildren();
 }
