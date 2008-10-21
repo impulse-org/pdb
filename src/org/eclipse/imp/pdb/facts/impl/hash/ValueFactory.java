@@ -14,6 +14,7 @@ package org.eclipse.imp.pdb.facts.impl.hash;
 
 import org.eclipse.imp.pdb.facts.IList;
 import org.eclipse.imp.pdb.facts.IListWriter;
+import org.eclipse.imp.pdb.facts.IMap;
 import org.eclipse.imp.pdb.facts.IRelation;
 import org.eclipse.imp.pdb.facts.IRelationWriter;
 import org.eclipse.imp.pdb.facts.ISet;
@@ -586,5 +587,13 @@ public class ValueFactory extends BaseValueFactory {
 			IValue child3, IValue child4, IValue child5, IValue child6,
 			IValue child7) {
 		return new Tree(this, type, new IValue[] { child1, child2, child3, child4, child5, child6, child7 });
+	}
+
+	public IMap map(Type key, Type value) {
+		return new Map(key, value);
+	}
+
+	public IMap map(NamedType type) {
+		return new Map(type);
 	}
 }
