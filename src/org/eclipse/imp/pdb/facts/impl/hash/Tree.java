@@ -25,6 +25,7 @@ import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TreeNodeType;
 import org.eclipse.imp.pdb.facts.type.TreeSortType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
+import org.eclipse.imp.pdb.facts.type.Type;
 
 /**
  * Naive implementation of a typed tree node, using array of children.
@@ -106,8 +107,16 @@ public class Tree extends Value implements ITree {
 		return ((TreeNodeType) fType).getName();
 	}
 
-	public TreeSortType getTreeSortType() {
-		return ((TreeNodeType) fType).getTreeSortType();
+	public TreeNodeType getTreeNodeType() {
+		return fType;
+	}
+	
+	@Override
+	/**
+	 * returns the type this tree node produces
+	 */
+	public Type getType() {
+		return fType.getTreeSortType();
 	}
 
 	@SuppressWarnings("unchecked")
