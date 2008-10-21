@@ -13,7 +13,7 @@
 package org.eclipse.imp.pdb.facts;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 /**
  * An instance of IValueWriter can serialize all types of IValues.
@@ -24,5 +24,5 @@ import java.io.Writer;
  *
  */
 public interface IValueWriter {
-	 void write(IValue value, Writer writer) throws IOException;
+	 void write(IValue value, OutputStream stream) throws IOException;
 }
