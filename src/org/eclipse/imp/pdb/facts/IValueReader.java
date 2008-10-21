@@ -13,7 +13,7 @@
 package org.eclipse.imp.pdb.facts;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
 
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.Type;
@@ -33,8 +33,8 @@ public interface IValueReader {
 	 * 
 	 * @param factory used when building the value
 	 * @param type    used to validate the value
-	 * @param reader  source of bytes to parse
+	 * @param stream  source of bytes to parse
 	 * @return an IValue that represents the string input
 	 */
-  IValue read(IValueFactory factory, Type type, Reader reader) throws FactTypeError, IOException;
+  IValue read(IValueFactory factory, Type type, InputStream stream) throws FactTypeError, IOException;
 }
