@@ -319,11 +319,7 @@ public class ValueFactory extends BaseValueFactory {
 	public IList listWith(IValue a) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(a);
-		} catch (FactTypeError e) {
-			// this will never happen
-		}
 		return result;
 	}
 
@@ -336,12 +332,8 @@ public class ValueFactory extends BaseValueFactory {
 	public IList listWith(IValue a, IValue b) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError e) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -355,13 +347,9 @@ public class ValueFactory extends BaseValueFactory {
 	public IList listWith(IValue a, IValue b, IValue c) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(c);
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError e) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -375,14 +363,10 @@ public class ValueFactory extends BaseValueFactory {
 	public IList listWith(IValue a, IValue b, IValue c, IValue d) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(d);
 			lw.insert(c);
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError e) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -396,15 +380,11 @@ public class ValueFactory extends BaseValueFactory {
 	public IList listWith(IValue a, IValue b, IValue c, IValue d, IValue e) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(e);
 			lw.insert(d);
 			lw.insert(c);
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError ex) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -419,16 +399,12 @@ public class ValueFactory extends BaseValueFactory {
 			IValue f) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(f);
 			lw.insert(e);
 			lw.insert(d);
 			lw.insert(c);
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError ex) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -443,7 +419,6 @@ public class ValueFactory extends BaseValueFactory {
 			IValue f, IValue g) {
 		List result = new List(a.getType());
 		IListWriter lw = result.getWriter();
-		try {
 			lw.insert(g);
 			lw.insert(f);
 			lw.insert(e);
@@ -451,9 +426,6 @@ public class ValueFactory extends BaseValueFactory {
 			lw.insert(c);
 			lw.insert(b);
 			lw.insert(a);
-		} catch (FactTypeError ex) {
-			// this will never happen
-		}
 
 		return result;
 	}
@@ -499,14 +471,14 @@ public class ValueFactory extends BaseValueFactory {
 	}
 	
 	public ITree tree(NamedType type, IValue[] children) {
-		if (!type.getBaseType().isTreeType()) {
+		if (!type.getBaseType().isTreeNodeType()) {
 			throw new FactTypeError(type + " is not a tree type");
 		}
 		return new Tree(this, type, children);
 	}
 
 	public ITree tree(TreeNodeType type, java.util.List<IValue> children) {
-		if (!type.getBaseType().isTreeType()) {
+		if (!type.getBaseType().isTreeNodeType()) {
 			throw new FactTypeError(type + " is not a tree type");
 		}
 		return new Tree(this, type, children);
