@@ -312,5 +312,20 @@ public interface IValueFactory {
      * @return a relation containing the tuple {a , b, c, d, e, f, g} with type RelationType[t1,...,tn]
      * @throws FactTypeError if the arities of the tuples are not equal
      */
-    public IRelation relationWith(ITuple a, ITuple b, ITuple c, ITuple d, ITuple e, ITuple f, ITuple g)  throws FactTypeError;	
+    public IRelation relationWith(ITuple a, ITuple b, ITuple c, ITuple d, ITuple e, ITuple f, ITuple g)  throws FactTypeError;
+
+    /**
+     * Creates an empty map.
+     * @param key   type to use for keys
+     * @param value type to use for values
+     * @return an empty map
+     */
+	public IMap map(Type key, Type value);
+	
+	/**
+     * Creates an empty map.
+     * @param type the type of the map (must be a subtype of MapType)
+     * @return an empty map
+     */
+	public IMap map(NamedType type);
 }
