@@ -71,11 +71,11 @@ public class XMLWriter implements IValueWriter {
 	}
 
 	private Node yield(IValue value, Document doc) {
-		Type type = value.getBaseType();
+		Type type = value.getType();
 		
-		if (type.isTreeType()) {
-			TreeNodeType node = (TreeNodeType) type;
-			TreeSortType sort = node.getTreeSortType();
+		if (type.isTreeSortType()) {
+			TreeSortType sort = (TreeSortType) type;
+			TreeNodeType node = ((ITree) value).getTreeNodeType();
 			String name = node.getName();
 			
 			if (XMLReader.isListWrapper(name,  sort)) {
@@ -200,7 +200,12 @@ public class XMLWriter implements IValueWriter {
 		Element treeNode = doc.createElement(value.getName());
 		
 		for (IValue child : value) {
-			treeNode.appendChild(yield(child, doc));
+			if (child.getBaseType().isTupleType()) {
+				appendTupleElements(doc, treeNode, child);
+			}
+			else {
+			  treeNode.appendChild(yield(child, doc));
+			}
 		}
 		
 		return treeNode;
