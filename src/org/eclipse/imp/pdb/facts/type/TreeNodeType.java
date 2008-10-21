@@ -79,7 +79,7 @@ public class TreeNodeType extends Type {
 		if (this == other) {
 			return this;
 		}
-		else if (other.isTreeType()) {
+		else if (other.isTreeNodeType()) {
 			return fNodeType.lub(((TreeNodeType) other).fNodeType);
 		}
 		
@@ -103,7 +103,7 @@ public class TreeNodeType extends Type {
 	}
 	
 	@Override
-	public boolean isTreeType() {
+	public boolean isTreeNodeType() {
 		return true;
 	}
 	
@@ -134,5 +134,10 @@ public class TreeNodeType extends Type {
 	
 	public Type getChildType(int i) {
 		return fChildrenTypes.getFieldType(i);
+	}
+	
+	@Override
+	public Type getBaseType() {
+		return fNodeType;
 	}
 }

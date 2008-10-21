@@ -82,7 +82,7 @@ public abstract class Type {
     	return false;
     }
     
-    public boolean isTreeType() {
+    public boolean isTreeNodeType() {
     	return false;
     }
 
