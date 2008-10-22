@@ -126,6 +126,8 @@ public interface IValueFactory {
      */
     public ITuple tuple(IValue[] elements, int size);
     
+    public ITuple tuple(NamedType type, IValue[] elements, int size);
+    
     /**
      * construct a tree node
      * 

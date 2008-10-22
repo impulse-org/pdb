@@ -466,6 +466,12 @@ public class ValueFactory extends BaseValueFactory {
 		return new Tuple(tmp);
 	}
 	
+	public ITuple tuple(NamedType type, IValue[] elements, int size) {
+		IValue[] tmp = new IValue[size];
+		System.arraycopy(elements, 0, tmp, 0, size);
+		return new Tuple(type, tmp);
+	}
+	
 	public ITree tree(TreeNodeType type, IValue[] children) {
 		return new Tree(this, type, children);
 	}

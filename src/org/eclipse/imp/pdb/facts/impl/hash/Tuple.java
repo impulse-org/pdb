@@ -18,6 +18,7 @@ import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.Value;
+import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
@@ -62,7 +63,12 @@ class Tuple extends Value implements ITuple {
 	this(new IValue[] { a, b, c, d, e, f, g });
     }
 
-    public int arity() {
+    public Tuple(NamedType type, IValue[] tmp) {
+		super(type);
+		this.fElements = tmp;
+	}
+
+	public int arity() {
         return fElements.length;
     }
 
