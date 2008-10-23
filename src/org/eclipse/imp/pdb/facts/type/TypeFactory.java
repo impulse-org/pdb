@@ -710,12 +710,12 @@ public class TypeFactory {
     	throw new FactTypeError("Type does not have this constructor name:" + constructorName);
     }
 
-    public ListType listType(Type type) {
-		sProtoListType.fEltType = type;
+    public ListType listType(Type elementType) {
+		sProtoListType.fEltType = elementType;
 		Type result= fCache.get(sProtoListType);
 
         if (result == null) {
-            result= new ListType(type);
+            result= new ListType(elementType);
             fCache.put(result, result);
         }
         return (ListType) result;
