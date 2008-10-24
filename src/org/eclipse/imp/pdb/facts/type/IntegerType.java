@@ -30,8 +30,6 @@ public class IntegerType extends Type {
 	public boolean isSubtypeOf(Type other) {
 		if (other.isValueType()) {
 			return true;
-		} else if (other.isNumberType()) {
-			return true;
 		} else {
 			return other == this;
 		}
@@ -43,7 +41,7 @@ public class IntegerType extends Type {
 			return this;
 		}
 		else {
-			return TypeFactory.getInstance().numberType().lub(other);
+			return TypeFactory.getInstance().valueType();
 		}
 	}
 

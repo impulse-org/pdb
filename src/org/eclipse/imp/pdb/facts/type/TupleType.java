@@ -138,6 +138,10 @@ public class TupleType extends Type implements Iterable<Type> {
         return fHashcode;
     }
 
+    /**
+     * Compute tuple type equality. Note that field labels are insignificant for
+     * the identity of a tuple type.
+     */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof TupleType)) {

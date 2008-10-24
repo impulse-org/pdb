@@ -13,7 +13,7 @@
 package org.eclipse.imp.pdb.facts.type;
 
 public class ObjectType<T> extends Type {
-    /*package*/ Class fClass;
+    /*package*/ Class<T> fClass;
     
     /*package*/ ObjectType(Class<T> clazz) {
     	fClass = clazz;
@@ -46,13 +46,14 @@ public class ObjectType<T> extends Type {
 		return TypeFactory.getInstance().valueType();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean equals(Object o) {
 		if (!(o instanceof ObjectType)) {
 			return false;
 		}
 		
-		ObjectType other = (ObjectType) o;
+		ObjectType<T> other = (ObjectType<T>) o;
 		
 		return other.fClass.equals(fClass);
 	}
