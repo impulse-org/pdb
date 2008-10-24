@@ -17,9 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
-import org.eclipse.imp.pdb.facts.IValue;
 
-import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
+import org.eclipse.imp.pdb.facts.IValue;
 
 public class TypeFactory {
     private static TypeFactory sInstance = new TypeFactory();
