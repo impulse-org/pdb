@@ -173,7 +173,7 @@ public class Tree extends Value implements ITree {
 			tmp =  new Tree(fFactory, (NamedType) getType());
 		}
 		else {
-			tmp = new Tree(fFactory, (TreeNodeType) getType());
+			tmp = new Tree(fFactory, getTreeNodeType());
 		}
 		
 		// no need to clone children, since IValues are immutable
