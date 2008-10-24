@@ -19,14 +19,30 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import org.eclipse.imp.pdb.facts.IValue;
 
+import com.sun.corba.se.impl.io.FVDCodeBaseImpl;
+
 public class TypeFactory {
     private static TypeFactory sInstance = new TypeFactory();
 
+    /**
+     * Caches all types to implement canonicalization
+     */
     private Map<Type,Type> fCache = new WeakHashMap<Type,Type>();
 
+    /**
+     * Keeps administratin of declared type aliases (NamedTypes)
+     */
     private Map<String, NamedType> fNamedTypes= new HashMap<String, NamedType>();
     
+    /**
+     * Keeps administration of declared tree node types
+     */
     private Map<TreeSortType, List<TreeNodeType>> fSignatures = new HashMap<TreeSortType, List<TreeNodeType>>();
+
+    /**
+     * Keeps administration of declared annotations 
+     */
+    private Map<Type, Map<String, Type>> fAnnotations = new HashMap<Type, Map<String, Type>>();
 
     private ValueType sValueType= ValueType.getInstance();
     
@@ -733,6 +749,84 @@ public class TypeFactory {
         
         return (MapType) result;
 	}
+    
+    /**
+     * Declare that certain types of values may have an annotation with a certain
+     * label. The annotation with that label will have a specific type.
+     * 
+     * @param onType the type of values that carry this annotation
+     * @param key    the label of the annotation
+     * @param valueType the type of values that represent the annotation
+     */
+    public void declareAnnotation(Type onType, String key, Type valueType) {
+    	Map<String, Type> annotationsForType = fAnnotations.get(onType);
+    	
+    	if (!isIdentifier(key)) {
+    		throw new FactTypeError("Key " + key + " is not an identifier.");
+    	}
+    	
+    	if (annotationsForType == null) {
+    		annotationsForType = new HashMap<String, Type>();
+    		fAnnotations.put(onType, annotationsForType);
+    	}
+    	
+    	Map<String, Type> declaredEarlier = getAnnotations(onType);
+    	
+    	if (!declaredEarlier.containsKey(key)) {
+    	  annotationsForType.put(key, valueType);
+    	}
+    	else if (!declaredEarlier.get(key).equals(valueType)) {
+    		throw new FactTypeError("Annotation was declared previously with different type: " + declaredEarlier.get(key));
+    	}
+    	
+    	// otherwise its a safe re-declaration and we do nothing
+    }
+    
+    /**
+     * Locates all declared annotations for a type, including the annotations declared
+     * for all of its super types.
+     * 
+     * @param onType
+     * @return
+     */
+    public Map<String, Type> getAnnotations(Type onType) {
+    	Map<String, Type> result = new HashMap<String,Type>();
+    	
+    	result.putAll(fAnnotations.get(sValueType));
+    	result.putAll(fAnnotations.get(onType));
+    	
+    	while (onType.isNamedType()) {
+    		onType = ((NamedType) onType).getSuperType();
+    		result.putAll(fAnnotations.get(onType));
+    	}
+    	
+    	if (onType.isTreeNodeType()) {
+    		result.putAll(fAnnotations.get(((TreeNodeType) onType).getTreeSortType()));
+    	}
+    	
+    	if (onType.isSetType() && ((SetType) onType).getElementType().isTupleType()) {
+    		RelationType tmp = relType(((SetType) onType).getElementType());
+    		result.putAll(fAnnotations.get(tmp));
+    	}
+    	
+    	if (onType.isRelationType()) {
+    		SetType tmp = setTypeOf(((RelationType) onType).getFieldTypes());
+    		result.putAll(fAnnotations.get(tmp));
+    	}
+    	
+    	return result;
+    }
+    
+    public Type getAnnotationType(Type onType, String key) {
+    	Map<String, Type> annotationsFor = getAnnotations(onType);
+    	Type result = annotationsFor.get(key);
+    	
+    	if (result != null) {
+    		return result;
+    	}
+    	
+    	return null;
+    }
 
 	/*package*/ TupleType tupleCompose(TupleType type, TupleType other) {
 		int N = type.getArity() + other.getArity() - 2;
