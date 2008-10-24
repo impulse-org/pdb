@@ -791,26 +791,45 @@ public class TypeFactory {
     public Map<String, Type> getAnnotations(Type onType) {
     	Map<String, Type> result = new HashMap<String,Type>();
     	
-    	result.putAll(fAnnotations.get(sValueType));
-    	result.putAll(fAnnotations.get(onType));
+    	Map<String, Type> valueAnnotations = fAnnotations.get(sValueType);
+    	if (valueAnnotations != null) {
+    		result.putAll(valueAnnotations);
+    	}
+    	
+    	Map<String, Type> localAnnotations = fAnnotations.get(onType);
+    	if (localAnnotations != null) {
+    	  result.putAll(localAnnotations);
+    	}
     	
     	while (onType.isNamedType()) {
     		onType = ((NamedType) onType).getSuperType();
-    		result.putAll(fAnnotations.get(onType));
+    		localAnnotations = fAnnotations.get(onType);
+    		if (localAnnotations != null) {
+    		  result.putAll(localAnnotations);
+    		}
     	}
     	
     	if (onType.isTreeNodeType()) {
-    		result.putAll(fAnnotations.get(((TreeNodeType) onType).getTreeSortType()));
+    		localAnnotations = fAnnotations.get(((TreeNodeType) onType).getTreeSortType());
+    		if (localAnnotations != null) {
+    		  result.putAll(localAnnotations);
+    		}
     	}
     	
     	if (onType.isSetType() && ((SetType) onType).getElementType().isTupleType()) {
     		RelationType tmp = relType(((SetType) onType).getElementType());
-    		result.putAll(fAnnotations.get(tmp));
+    		localAnnotations = fAnnotations.get(tmp);
+    		if (localAnnotations != null) {
+    		  result.putAll(localAnnotations);
+    		}
     	}
     	
     	if (onType.isRelationType()) {
     		SetType tmp = setTypeOf(((RelationType) onType).getFieldTypes());
-    		result.putAll(fAnnotations.get(tmp));
+    		localAnnotations = fAnnotations.get(tmp);
+    		if (localAnnotations != null) {
+    		  result.putAll(localAnnotations);
+    		}
     	}
     	
     	return result;
