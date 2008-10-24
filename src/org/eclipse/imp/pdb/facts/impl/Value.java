@@ -17,7 +17,9 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import org.eclipse.imp.pdb.facts.IValue;
+import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.Type;
+import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
 public abstract class Value implements IValue {
     private static final LinkedList<IValue> sEmptyIterable = new LinkedList<IValue>();
@@ -56,6 +58,17 @@ public abstract class Value implements IValue {
     
     public IValue setAnnotation(String label, IValue value) {
     	Value clone;
+    	
+    	Type expected = TypeFactory.getInstance().getAnnotationType(getType(), label);
+    	
+    	if (expected == null) {
+    		throw new FactTypeError("This annotation was not declared for this type: " + label + " for " + getType());
+    	}
+    		
+        if (!value.getType().isSubtypeOf(expected)) {
+    		throw new FactTypeError("The type of this annotation should be a subtype of " + expected + " and not " + value.getType());
+    	}
+        
 		try {
 			clone = (Value) clone();
 			clone.fAnnotations.put(label, value);
