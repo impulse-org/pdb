@@ -17,6 +17,7 @@ import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 /*package*/ class StringValue extends Value implements IString {
     private final String fValue;
@@ -53,7 +54,7 @@ import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
     	return fValue.hashCode();
     }
     
-    public IValue accept(IValueVisitor v) {
+    public IValue accept(IValueVisitor v) throws VisitorException {
     	return v.visitString(this);
     }
     

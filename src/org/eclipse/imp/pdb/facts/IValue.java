@@ -14,6 +14,7 @@ package org.eclipse.imp.pdb.facts;
 
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 
 public interface IValue  {
@@ -55,5 +56,5 @@ public interface IValue  {
      * 
      * @param
      */
-    IValue accept(IValueVisitor v);
+    IValue accept(IValueVisitor v) throws VisitorException;
 }

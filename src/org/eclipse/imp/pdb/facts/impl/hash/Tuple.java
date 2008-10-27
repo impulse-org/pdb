@@ -22,6 +22,7 @@ import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 class Tuple extends Value implements ITuple {
     protected IValue[] fElements;
@@ -131,7 +132,7 @@ class Tuple extends Value implements ITuple {
         return 1;
     }
     
-    public IValue accept(IValueVisitor v) {
+    public IValue accept(IValueVisitor v) throws VisitorException {
     	return v.visitTuple(this);
     }
     

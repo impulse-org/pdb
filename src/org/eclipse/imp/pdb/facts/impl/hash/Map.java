@@ -26,6 +26,7 @@ import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 class Map extends WritableValue<IMapWriter> implements IMap {
 	static class MapWriter extends WriterBase<IMapWriter> implements IMapWriter {
@@ -135,7 +136,7 @@ class Map extends WritableValue<IMapWriter> implements IMap {
 		return fMap.equals(other.fMap);
 	}
 
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitMap(this);
 	}
 

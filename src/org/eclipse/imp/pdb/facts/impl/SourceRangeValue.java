@@ -17,6 +17,7 @@ import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 /*package*/class SourceRangeValue extends Value implements ISourceRange {
 	private final int fStartOffset;
@@ -102,7 +103,7 @@ import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 				+ 11 * fStartCol + 13 * fEndCol;
 	}
 	
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitSourceRange(this);
 	}
 	

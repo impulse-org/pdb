@@ -17,6 +17,7 @@ import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 /*package*/ class DoubleValue extends Value implements IDouble {
     private final double fValue;
@@ -54,7 +55,7 @@ import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
     	return (int)(bits ^ (bits >>> 32));
     }
     
-    public IValue accept(IValueVisitor v) {
+    public IValue accept(IValueVisitor v) throws VisitorException {
     	return v.visitDouble(this);
     };
     

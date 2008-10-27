@@ -31,6 +31,7 @@ import org.eclipse.imp.pdb.facts.type.SetType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 public class List extends WritableValue<IListWriter> implements IList {
 	/* package */LinkedList<IValue> fList = new LinkedList<IValue>();
@@ -199,7 +200,7 @@ public class List extends WritableValue<IListWriter> implements IList {
 		return fList.equals(other.fList);
 	}
 	
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitList(this);
 	}
 	

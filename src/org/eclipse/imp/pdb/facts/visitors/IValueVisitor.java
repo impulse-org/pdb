@@ -25,16 +25,16 @@ import org.eclipse.imp.pdb.facts.ITree;
 import org.eclipse.imp.pdb.facts.ITuple;
 
 public interface IValueVisitor {
-   public IString visitString(IString o);
-   public IDouble visitDouble(IDouble o);
-   public IList visitList(IList o);
-   public <T> IObject<T> visitObject(IObject<T> o);
-   public IRelation visitRelation(IRelation o);
-   public ISet visitSet(ISet o);
-   public ISourceLocation visitSourceLocation(ISourceLocation o);
-   public ISourceRange visitSourceRange(ISourceRange o);
-   public ITuple visitTuple(ITuple o);
-   public ITree visitTree(ITree o);
-   public IInteger visitInteger(IInteger o);
-   public IMap visitMap(IMap o);
+   public IString visitString(IString o) throws VisitorException;
+   public IDouble visitDouble(IDouble o) throws VisitorException;
+   public IList visitList(IList o) throws VisitorException;
+   public <T> IObject<T> visitObject(IObject<T> o) throws VisitorException;
+   public IRelation visitRelation(IRelation o) throws VisitorException;
+   public ISet visitSet(ISet o) throws VisitorException;
+   public ISourceLocation visitSourceLocation(ISourceLocation o) throws VisitorException;
+   public ISourceRange visitSourceRange(ISourceRange o) throws VisitorException;
+   public ITuple visitTuple(ITuple o) throws VisitorException;
+   public ITree visitTree(ITree o) throws VisitorException;
+   public IInteger visitInteger(IInteger o) throws VisitorException;
+   public IMap visitMap(IMap o) throws VisitorException;
 }

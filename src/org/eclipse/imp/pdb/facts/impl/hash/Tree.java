@@ -25,6 +25,7 @@ import org.eclipse.imp.pdb.facts.type.TreeNodeType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 /**
  * Naive implementation of a typed tree node, using array of children.
@@ -73,7 +74,7 @@ public class Tree extends Value implements ITree {
 		fChildren.addAll(children);
 	}
 
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitTree(this);
 	}
 

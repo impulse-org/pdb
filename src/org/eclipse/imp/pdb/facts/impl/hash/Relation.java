@@ -33,6 +33,7 @@ import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 class Relation extends WritableValue<IRelationWriter> implements IRelation {
 	static class RelationWriter extends WriterBase<IRelationWriter> implements
@@ -526,7 +527,7 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		return fTuples.equals(other.fTuples);
 	}
 	
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitRelation(this);
 	}
 	

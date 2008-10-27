@@ -34,51 +34,51 @@ public abstract class VisitorAdapter implements IValueVisitor {
 		this.fVisitor = visitor;
 	}
 
-	public IDouble visitDouble(IDouble o) {
+	public IDouble visitDouble(IDouble o) throws VisitorException {
 		return fVisitor.visitDouble(o);
 	}
 
-	public IInteger visitInteger(IInteger o) {
+	public IInteger visitInteger(IInteger o) throws VisitorException {
 		return fVisitor.visitInteger(o);
 	}
 
-	public IList visitList(IList o) {
+	public IList visitList(IList o) throws VisitorException {
 		return fVisitor.visitList(o);
 	}
 
-	public IMap visitMap(IMap o) {
+	public IMap visitMap(IMap o) throws VisitorException {
 		return fVisitor.visitMap(o);
 	}
 
-	public <T> IObject<T> visitObject(IObject<T> o) {
+	public <T> IObject<T> visitObject(IObject<T> o) throws VisitorException {
 		return fVisitor.visitObject(o);
 	}
 
-	public IRelation visitRelation(IRelation o) {
+	public IRelation visitRelation(IRelation o) throws VisitorException {
 		return fVisitor.visitRelation(o);
 	}
 
-	public ISet visitSet(ISet o) {
+	public ISet visitSet(ISet o) throws VisitorException {
 		return fVisitor.visitSet(o);
 	}
 
-	public ISourceLocation visitSourceLocation(ISourceLocation o) {
+	public ISourceLocation visitSourceLocation(ISourceLocation o) throws VisitorException {
 		return fVisitor.visitSourceLocation(o);
 	}
 
-	public ISourceRange visitSourceRange(ISourceRange o) {
+	public ISourceRange visitSourceRange(ISourceRange o) throws VisitorException {
 		return fVisitor.visitSourceRange(o);
 	}
 
-	public IString visitString(IString o) {
+	public IString visitString(IString o) throws VisitorException {
 		return fVisitor.visitString(o);
 	}
 
-	public ITree visitTree(ITree o) {
+	public ITree visitTree(ITree o) throws VisitorException {
 		return fVisitor.visitTree(o);
 	}
 
-	public ITuple visitTuple(ITuple o) {
+	public ITuple visitTuple(ITuple o) throws VisitorException {
 		return fVisitor.visitTuple(o);
 	}
 }

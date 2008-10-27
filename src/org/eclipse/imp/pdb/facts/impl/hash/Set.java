@@ -32,6 +32,7 @@ import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 class Set extends WritableValue<ISetWriter> implements ISet {
 	static class SetWriter extends WriterBase<ISetWriter> implements ISetWriter {
@@ -359,7 +360,7 @@ class Set extends WritableValue<ISetWriter> implements ISet {
 		return rel.union(this);
 	}
 	
-	public IValue accept(IValueVisitor v) {
+	public IValue accept(IValueVisitor v) throws VisitorException {
 		return v.visitSet(this);
 	}
 	

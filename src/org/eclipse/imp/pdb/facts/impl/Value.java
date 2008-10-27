@@ -13,7 +13,6 @@
 package org.eclipse.imp.pdb.facts.impl;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.eclipse.imp.pdb.facts.IValue;

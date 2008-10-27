@@ -29,51 +29,51 @@ import org.eclipse.imp.pdb.facts.ITuple;
  * 
  */
 public abstract class IdentityVisitor implements IValueVisitor {
-	public IDouble visitDouble(IDouble o) {
+	public IDouble visitDouble(IDouble o)  throws VisitorException{
 		return o;
 	}
 
-	public IInteger visitInteger(IInteger o) {
+	public IInteger visitInteger(IInteger o)  throws VisitorException{
 		return o;
 	}
 
-	public IList visitList(IList o) {
+	public IList visitList(IList o)  throws VisitorException{
 		return o;
 	}
 
-	public IMap visitMap(IMap o) {
+	public IMap visitMap(IMap o)  throws VisitorException{
 		return o;
 	}
 
-	public <T> IObject<T> visitObject(IObject<T> o) {
+	public <T> IObject<T> visitObject(IObject<T> o)  throws VisitorException{
 		return o;
 	}
 
-	public IRelation visitRelation(IRelation o) {
+	public IRelation visitRelation(IRelation o)  throws VisitorException{
 		return o;
 	}
 
-	public ISet visitSet(ISet o) {
+	public ISet visitSet(ISet o)  throws VisitorException{
 		return o;
 	}
 
-	public ISourceLocation visitSourceLocation(ISourceLocation o) {
+	public ISourceLocation visitSourceLocation(ISourceLocation o)  throws VisitorException{
 		return o;
 	}
 
-	public ISourceRange visitSourceRange(ISourceRange o) {
+	public ISourceRange visitSourceRange(ISourceRange o)  throws VisitorException{
 		return o;
 	}
 
-	public IString visitString(IString o) {
+	public IString visitString(IString o)  throws VisitorException{
 		return o;
 	}
 
-	public ITree visitTree(ITree o) {
+	public ITree visitTree(ITree o)  throws VisitorException{
 		return o;
 	}
 
-	public ITuple visitTuple(ITuple o) {
+	public ITuple visitTuple(ITuple o)  throws VisitorException{
 		return o;
 	}
 }

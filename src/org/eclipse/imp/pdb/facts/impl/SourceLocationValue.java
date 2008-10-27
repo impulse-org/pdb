@@ -18,6 +18,7 @@ import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
+import org.eclipse.imp.pdb.facts.visitors.VisitorException;
 
 /*package*/ class SourceLocationValue extends Value implements ISourceLocation {
     private final String fPath;
@@ -62,7 +63,7 @@ import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
     	return 10987 + 11923 * fPath.hashCode() + 9619 * fRange.hashCode();
     }
     
-    public IValue accept(IValueVisitor v) {
+    public IValue accept(IValueVisitor v) throws VisitorException {
     	return v.visitSourceLocation(this);
     }
     
