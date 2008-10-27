@@ -13,6 +13,7 @@
 package org.eclipse.imp.pdb.facts;
 
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
+import org.eclipse.imp.pdb.facts.type.TupleType;
 
 public interface IRelation extends Iterable<ITuple>, IValue {
     public boolean isEmpty();
@@ -56,4 +57,6 @@ public interface IRelation extends Iterable<ITuple>, IValue {
     public ISet carrier();
     
     public IList topologicalOrderedList() throws FactTypeError;
+    
+    public TupleType getFieldTypes();
 }
