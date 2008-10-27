@@ -13,6 +13,7 @@
 package org.eclipse.imp.pdb.facts;
 
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
+import org.eclipse.imp.pdb.facts.type.Type;
 
 public interface IMap extends Iterable<IValue>, IValue {
     public boolean isEmpty();
@@ -30,6 +31,10 @@ public interface IMap extends Iterable<IValue>, IValue {
     public boolean containsKey(IValue key) throws FactTypeError ;
     
     public boolean containsValue(IValue value) throws FactTypeError ;
+    
+    public Type getKeyType();
+    
+    public Type getValueType();
     
     // TODO add methods for union, intersection, etc.. manipulation and 
     // construction of IMaps from other IMaps, and IMaps from sets or relations.
