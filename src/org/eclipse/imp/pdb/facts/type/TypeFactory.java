@@ -29,7 +29,7 @@ public class TypeFactory {
     private Map<Type,Type> fCache = new WeakHashMap<Type,Type>();
 
     /**
-     * Keeps administratin of declared type aliases (NamedTypes)
+     * Keeps administration of declared type aliases (NamedTypes)
      */
     private Map<String, NamedType> fNamedTypes= new HashMap<String, NamedType>();
     
@@ -90,7 +90,7 @@ public class TypeFactory {
 
     /**
      * Construct a new type. An object type imports a Java class into the PDB type hierarchy.
-     * An ObjectType is a subtype of value. The Java type hierarchy is of no influence in the
+     * An ObjectType is a sub type of value. The Java type hierarchy is of no influence in the
      * PDB type hierarchy, so if class A is a subclass of class B, then Object[A] is not 
      * a sub type of Object[B] in the PDB class hierarchy.
      * 
@@ -926,6 +926,22 @@ public class TypeFactory {
     }
     
     /**
+     * Construct a special kind of tree node. This tree node does not have
+     * a name, and can only have one child. It is used for serialized values
+     * where one alternative for a TreeSortType does not have a wrapping node name.
+     * 
+     * @param sort        the sort this constructor builds      
+     * @param string      the name of the alternative (even though it will not be used)
+     * @param argType     the type of the single child
+     * @param label       the label of the single child
+     * @return
+     */
+    public TreeNodeType anonymousTreeType(TreeSortType sort, String string,
+			Type argType, String label) {
+    	return treeNodeType(sort, null, TypeFactory.getInstance().tupleTypeOf(argType, label));
+	}
+
+    /**
      * Construct a nullary tree node type 
      * @param nodeType the type of node this constructor builds
      * @param name     the name of the TreeNodeType
@@ -1401,5 +1417,6 @@ public class TypeFactory {
 		return true;
 	}
 
+	
 	
 }
