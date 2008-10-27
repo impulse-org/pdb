@@ -14,8 +14,8 @@ package org.eclipse.imp.pdb.facts.impl;
 
 import org.eclipse.imp.pdb.facts.IObject;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.Type;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 public class ObjectValue<T> extends Value implements IObject<T> {
     T fValue;

@@ -15,9 +15,9 @@ package org.eclipse.imp.pdb.facts.impl;
 import org.eclipse.imp.pdb.facts.ISourceLocation;
 import org.eclipse.imp.pdb.facts.ISourceRange;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 /*package*/ class SourceLocationValue extends Value implements ISourceLocation {
     private final String fPath;

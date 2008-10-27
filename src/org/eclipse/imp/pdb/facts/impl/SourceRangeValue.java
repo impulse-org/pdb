@@ -14,9 +14,9 @@ package org.eclipse.imp.pdb.facts.impl;
 
 import org.eclipse.imp.pdb.facts.ISourceRange;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 /*package*/class SourceRangeValue extends Value implements ISourceRange {
 	private final int fStartOffset;
