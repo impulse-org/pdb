@@ -21,7 +21,6 @@ import org.eclipse.imp.pdb.facts.IRelation;
 import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -31,6 +30,7 @@ import org.eclipse.imp.pdb.facts.type.RelationType;
 import org.eclipse.imp.pdb.facts.type.SetType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 public class List extends WritableValue<IListWriter> implements IList {
 	/* package */LinkedList<IValue> fList = new LinkedList<IValue>();
@@ -203,11 +203,6 @@ public class List extends WritableValue<IListWriter> implements IList {
 		return v.visitList(this);
 	}
 	
-	@Override
-	public Iterable<IValue> getChildren() {
-		return fList;
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object clone() throws CloneNotSupportedException {

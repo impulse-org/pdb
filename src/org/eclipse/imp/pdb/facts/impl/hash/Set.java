@@ -22,7 +22,6 @@ import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ISetWriter;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -32,6 +31,7 @@ import org.eclipse.imp.pdb.facts.type.SetType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 class Set extends WritableValue<ISetWriter> implements ISet {
 	static class SetWriter extends WriterBase<ISetWriter> implements ISetWriter {
@@ -361,11 +361,6 @@ class Set extends WritableValue<ISetWriter> implements ISet {
 	
 	public IValue accept(IValueVisitor v) {
 		return v.visitSet(this);
-	}
-	
-	@Override
-	public Iterable<IValue> getChildren() {
-		return this;
 	}
 	
 	@SuppressWarnings("unchecked")

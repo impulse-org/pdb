@@ -14,20 +14,18 @@ package org.eclipse.imp.pdb.facts.impl.hash;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.eclipse.imp.pdb.facts.IMap;
 import org.eclipse.imp.pdb.facts.IMapWriter;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.MapType;
 import org.eclipse.imp.pdb.facts.type.NamedType;
-import org.eclipse.imp.pdb.facts.type.SetType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 class Map extends WritableValue<IMapWriter> implements IMap {
 	static class MapWriter extends WriterBase<IMapWriter> implements IMapWriter {
@@ -95,42 +93,6 @@ class Map extends WritableValue<IMapWriter> implements IMap {
 		return fMap.keySet().iterator();
 	}
 
-	/**
-	 * Does something different than iterator, namely also visits the values
-	 */
-	@Override
-	public Iterable<IValue> getChildren() {
-		return new Iterable<IValue>() {
-			public Iterator<IValue> iterator() {
-				return new Iterator<IValue>() {
-					IValue value;
-					Iterator<IValue> keyIt = iterator();
-					
-					public boolean hasNext() {
-						return value != null || keyIt.hasNext();
-					}
-
-					public IValue next() {
-						if (value != null) {
-							IValue tmp = value;
-							value = null;
-							return tmp;
-						}
-						else {
-							IValue tmp = keyIt.next();
-							value = fMap.get(tmp);
-							return tmp;
-						}
-					}
-
-					public void remove() {
-						throw new UnsupportedOperationException();
-					}
-				};
-			}
-		};
-	}
-	
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{ ");

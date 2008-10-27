@@ -13,7 +13,6 @@
 package org.eclipse.imp.pdb.facts.impl.hash;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -24,7 +23,6 @@ import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.ISetWriter;
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.WritableValue;
 import org.eclipse.imp.pdb.facts.impl.WriterBase;
 import org.eclipse.imp.pdb.facts.type.FactTypeError;
@@ -34,6 +32,7 @@ import org.eclipse.imp.pdb.facts.type.SetType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 class Relation extends WritableValue<IRelationWriter> implements IRelation {
 	static class RelationWriter extends WriterBase<IRelationWriter> implements
@@ -531,29 +530,6 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		return v.visitRelation(this);
 	}
 	
-	@Override
-	public Iterable<IValue> getChildren() {
-		return new Iterable<IValue>() {
-			public Iterator<IValue> iterator() {
-				return new Iterator<IValue>() {
-					Iterator<ITuple> it = fTuples.iterator();
-					
-					public boolean hasNext() {
-						return it.hasNext();
-					}
-
-					public IValue next() {
-						return it.next();
-					}
-
-					public void remove() {
-						throw new UnsupportedOperationException();
-					}
-				};
-			}
-		};
-	}
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object clone() throws CloneNotSupportedException {
@@ -577,5 +553,9 @@ class Relation extends WritableValue<IRelationWriter> implements IRelation {
 		}
 		
 		return tmp;
+	}
+
+	public TupleType getFieldTypes() {
+		return ((RelationType) fType).getFieldTypes();
 	}
 }

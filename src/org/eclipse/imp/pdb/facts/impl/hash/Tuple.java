@@ -16,12 +16,12 @@ import java.util.Iterator;
 
 import org.eclipse.imp.pdb.facts.ITuple;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.IValueVisitor;
 import org.eclipse.imp.pdb.facts.impl.Value;
 import org.eclipse.imp.pdb.facts.type.NamedType;
 import org.eclipse.imp.pdb.facts.type.TupleType;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 class Tuple extends Value implements ITuple {
     protected IValue[] fElements;
@@ -136,11 +136,6 @@ class Tuple extends Value implements ITuple {
     }
     
     @Override
-    public Iterable<IValue> getChildren() {
-    	return this;
-    }
-    
-    @Override
     protected Object clone() throws CloneNotSupportedException {
     	Tuple tmp = new Tuple(getType());
     	
@@ -149,4 +144,26 @@ class Tuple extends Value implements ITuple {
     	
     	return tmp;
     }
+
+	public ITuple set(int i, IValue arg) {
+		try {
+			Tuple tmp = (Tuple) clone();
+			tmp.fElements[i] = arg;
+			return tmp;
+		} catch (CloneNotSupportedException e) {
+			// does not happen
+			return null;
+		}
+	}
+
+	public ITuple set(String label, IValue arg) {
+		try {
+			Tuple tmp = (Tuple) clone();
+			tmp.fElements[((TupleType) fType).getFieldIndex(label)] = arg;
+			return tmp;
+		} catch (CloneNotSupportedException e) {
+			// does not happen
+			return null;
+		}
+	}
 }
