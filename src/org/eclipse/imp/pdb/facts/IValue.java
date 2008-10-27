@@ -13,9 +13,10 @@
 package org.eclipse.imp.pdb.facts;
 
 import org.eclipse.imp.pdb.facts.type.Type;
+import org.eclipse.imp.pdb.facts.visitors.IValueVisitor;
 
 
-public interface IValue extends IVisitable {
+public interface IValue  {
 	/** 
 	 * @return the Type of a value
 	 */
@@ -48,4 +49,11 @@ public interface IValue extends IVisitable {
      * @return true iff this value has an annotation with that label
      */
     boolean hasAnnotation(String label);
+    
+    /**
+     * Execute the @see IValueVisitor on the current node
+     * 
+     * @param
+     */
+    IValue accept(IValueVisitor v);
 }
