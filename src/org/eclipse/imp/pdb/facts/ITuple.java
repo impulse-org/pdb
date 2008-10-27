@@ -16,6 +16,10 @@ public abstract interface ITuple extends Iterable<IValue>, IValue {
     public IValue get(int i);
     
     public IValue get(String label);
+    
+    public ITuple set(int i, IValue arg);
+    
+    public ITuple set(String label, IValue arg);
 
     public int arity();
 
