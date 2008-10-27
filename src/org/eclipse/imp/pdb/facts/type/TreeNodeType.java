@@ -88,7 +88,7 @@ public class TreeNodeType extends Type {
 
 	@Override
 	public int hashCode() {
-		return 21 + 44927 * fName.hashCode() + 
+		return 21 + 44927 * ((fName != null) ? fName.hashCode() : 1) + 
 		181 * fChildrenTypes.hashCode() + 
 		354767453 * fNodeType.hashCode();
 	}
@@ -96,8 +96,10 @@ public class TreeNodeType extends Type {
 	@Override
 	public boolean equals(Object o) {
 		if (o instanceof TreeNodeType) {
-			return fChildrenTypes == ((TreeNodeType) o).fChildrenTypes &&
-			fNodeType == fNodeType;
+			return ((fName == null) ? ((TreeNodeType) o).fName == null : fName
+					.equals(((TreeNodeType) o).fName))
+					&& fChildrenTypes == ((TreeNodeType) o).fChildrenTypes
+					&& fNodeType == fNodeType;
 		}
 		return false;
 	}
