@@ -28,7 +28,7 @@ import org.eclipse.imp.pdb.facts.ITuple;
  * to easily implement a visitor that visits selected types of IValues.
  * 
  */
-public abstract class DefaultValueVisitor implements IValueVisitor {
+public abstract class IdentityVisitor implements IValueVisitor {
 	public IDouble visitDouble(IDouble o) {
 		return o;
 	}
