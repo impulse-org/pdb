@@ -138,19 +138,29 @@ public class Tree extends Value implements ITree {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append(fType.getName());
-
-		if (fChildren.size() > 0) {
-			builder.append("(");
-			Iterator<IValue> it = iterator();
-			while (it.hasNext()) {
-				builder.append(it.next().toString());
-				if (it.hasNext()) {
-					builder.append(",");
-				}
-			}
-			builder.append(")");
+		String name = fType.getName();
+		
+		if (name != null) {
+			builder.append(name);
 		}
+		
+		if (name != null) {
+			if (fChildren.size() > 0) {
+				builder.append("(");
+				Iterator<IValue> it = iterator();
+				while (it.hasNext()) {
+					builder.append(it.next().toString());
+					if (it.hasNext()) {
+						builder.append(",");
+					}
+				}
+				builder.append(")");
+			}
+		} else {
+			// anonymous constructors always have one child
+			builder.append(fChildren.get(0).toString());
+		}
+		
 		return builder.toString();
 	}
 	
