@@ -180,7 +180,7 @@ public class List extends WritableValue<IListWriter> implements IList {
 
 	private ListType checkInsert(IValue e) throws FactTypeError {
 		checkInsert(e.getType());
-		return (ListType) getType();
+		return (ListType) getType().getBaseType();
 	}
 	
 	private void checkInsert(Type eltType) throws FactTypeError {
