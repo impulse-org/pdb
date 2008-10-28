@@ -341,7 +341,7 @@ public class TypeFactory {
         String[] fieldNames = sProtoTuple.getFieldNames(2);
         fieldNames[0] = label1;
         fieldNames[1]=  label2;
-        return getOrCreateTuple(1, fieldTypes, fieldNames);
+        return getOrCreateTuple(2, fieldTypes, fieldNames);
     }
 
     /**
@@ -378,7 +378,7 @@ public class TypeFactory {
         fieldNames[0] = label1;
         fieldNames[1]=  label2;
         fieldNames[3]=  label3;
-        return getOrCreateTuple(1, fieldTypes, fieldNames);
+        return getOrCreateTuple(3, fieldTypes, fieldNames);
     }
 
     /**
@@ -472,7 +472,7 @@ public class TypeFactory {
         fieldNames[3]=  label4;
         fieldNames[4]=  label5;
         
-        return getOrCreateTuple(4, fieldTypes, fieldNames);
+        return getOrCreateTuple(5, fieldTypes, fieldNames);
     }
 
     /**
@@ -528,7 +528,7 @@ public class TypeFactory {
         fieldNames[4]=  label5;
         fieldNames[5]=  label6;
         
-        return getOrCreateTuple(4, fieldTypes, fieldNames);
+        return getOrCreateTuple(6, fieldTypes, fieldNames);
     }
 
     /**
@@ -590,7 +590,7 @@ public class TypeFactory {
         fieldNames[5]=  label6;
         fieldNames[6]=  label7;
         
-        return getOrCreateTuple(4, fieldTypes, fieldNames);
+        return getOrCreateTuple(7, fieldTypes, fieldNames);
     }
 
     /**
@@ -1211,12 +1211,23 @@ public class TypeFactory {
      */
     public TreeNodeType signatureGet(TreeSortType type, String constructorName) {
     	for (TreeNodeType node : fSignatures.get(type)) {
-    		if (node.getName().equals(constructorName)) {
+    		String name = node.getName();
+			if (name != null && name.equals(constructorName)) {
     			return node;
     		}
     	}
     	
-    	throw new FactTypeError("Type does not have this constructor name:" + constructorName);
+    	throw new FactTypeError("Type " + type + " does not have this constructor name:" + constructorName);
+    }
+    
+    public TreeNodeType signatureGetAnonymous(TreeSortType type) {
+    	for (TreeNodeType node : fSignatures.get(type)) {
+    		if (node.getName() == null) {
+    			return node;
+    		}
+    	}
+    	
+    	throw new FactTypeError("Type does not have an anonymous constructor: " + type);
     }
 
     /**
