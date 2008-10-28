@@ -927,8 +927,9 @@ public class TypeFactory {
     
     /**
      * Construct a special kind of tree node. This tree node does not have
-     * a name, and can only have one child. It is used for serialized values
+     * a name, always has exactly one child. It is used for serialized values
      * where one alternative for a TreeSortType does not have a wrapping node name.
+     * Each TreeSortType may maximally have one anonymous tree node type.
      * 
      * @param sort        the sort this constructor builds      
      * @param string      the name of the alternative (even though it will not be used)
@@ -1209,7 +1210,7 @@ public class TypeFactory {
      * @return a TreeNodeType if it was declared before
      * @throws a FactTypeError if the type was not declared before
      */
-    public TreeNodeType signatureGet(TreeSortType type, String constructorName) {
+    public TreeNodeType signatureGet(TreeSortType type, String constructorName) throws FactTypeError {
     	for (TreeNodeType node : fSignatures.get(type)) {
     		String name = node.getName();
 			if (name != null && name.equals(constructorName)) {
@@ -1220,7 +1221,15 @@ public class TypeFactory {
     	throw new FactTypeError("Type " + type + " does not have this constructor name:" + constructorName);
     }
     
-    public TreeNodeType signatureGetAnonymous(TreeSortType type) {
+    /**
+     * Retrieve the type for an anonymous constructor.  
+     * See @link {@link TypeFactory#anonymousTreeType(TreeSortType, String, Type, String)})
+     * for more information.
+     * @param type TreeSortType to lookup the constructor for
+     * @return an anonymous tree node type
+     * @throws FactTypeError if the type does not have an anonymous constructor
+     */
+    public TreeNodeType signatureGetAnonymous(TreeSortType type) throws FactTypeError {
     	for (TreeNodeType node : fSignatures.get(type)) {
     		if (node.getName() == null) {
     			return node;
