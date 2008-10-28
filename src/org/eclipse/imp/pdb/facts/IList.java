@@ -23,6 +23,7 @@ public interface IList extends Iterable<IValue>, IValue {
     public IList append(IValue e) throws FactTypeError;
     public IList insert(IValue e) throws FactTypeError;
     public IValue get(int i);
+    public boolean isEmpty();
    
     public IListWriter getWriter();
 }

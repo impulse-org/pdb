@@ -228,4 +228,8 @@ public class List extends WritableValue<IListWriter> implements IList {
 		
 		return tmp;
 	}
+
+	public boolean isEmpty() {
+		return fList.isEmpty();
+	}
 }
