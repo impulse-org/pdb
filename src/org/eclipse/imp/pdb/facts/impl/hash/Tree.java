@@ -47,9 +47,11 @@ public class Tree extends Value implements ITree {
 		fType = type;
 		fFactory = factory;
 		
-		fChildren = new ArrayList<IValue>(children.length);
-		for (IValue child : children) {
-			fChildren.add(child);
+		if (children != null) {
+			fChildren = new ArrayList<IValue>(children.length);
+			for (IValue child : children) {
+				fChildren.add(child);
+			}
 		}
 	}
 
