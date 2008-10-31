@@ -40,8 +40,10 @@ public class AnalysisException extends Exception {
                 IStatus s= ((CoreException) e1).getStatus();
                 Throwable cause= s.getException();
                 ByteArrayOutputStream bs= new ByteArrayOutputStream();
-                cause.printStackTrace(new PrintStream(bs));
-                sb.append(bs.toString());
+                if (cause != null) {
+                    cause.printStackTrace(new PrintStream(bs));
+                    sb.append(bs.toString());
+                }
                 e1= s.getException();
             } else {
                 e1= e1.getCause();                                
