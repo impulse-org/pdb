@@ -12,8 +12,6 @@
 
 package org.eclipse.imp.pdb;
 
-import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.imp.preferences.PreferencesService;
 import org.eclipse.imp.runtime.PluginBase;
 import org.osgi.framework.BundleContext;
 
@@ -41,23 +39,17 @@ public class PDBPlugin extends PluginBase {
 
     public void start(BundleContext context) throws Exception {
         super.start(context);
+        if (preferencesService == null) {
+            getPreferencesService();
+        }
     }
 
     public String getID() {
         return kPluginID;
     }
 
-    protected static PreferencesService preferencesService= null;
-
-    public static PreferencesService getPreferencesService() {
-        if (preferencesService == null) {
-            preferencesService= new PreferencesService(ResourcesPlugin.getWorkspace().getRoot().getProject());
-            preferencesService.setLanguageName(kLanguageName);
-            // TODO:  When some actual preferences are created, put
-            // a call to the preferences initializer here
-            // (The IMP New Preferences Support wizard creates such
-            // an initializer.)
-        }
-        return preferencesService;
+    @Override
+    public String getLanguageID() {
+        return kLanguageName;
     }
 }
