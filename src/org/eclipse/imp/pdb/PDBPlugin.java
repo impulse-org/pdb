@@ -47,9 +47,4 @@ public class PDBPlugin extends PluginBase {
     public String getID() {
         return kPluginID;
     }
-
-    @Override
-    public String getLanguageID() {
-        return kLanguageName;
-    }
 }
