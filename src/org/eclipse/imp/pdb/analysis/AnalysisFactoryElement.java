@@ -42,7 +42,7 @@ class AnalysisFactoryElement {
                 IConfigurationElement outputTypeElem= outputTypes[i];
                 String outputTypeStr= outputTypeElem.getAttribute(ANALYZER_TYPE_ATTR);
                 try {
-                    Type outputType= fTypeFactory.lookupNamedType(outputTypeStr);
+                    Type outputType= fTypeFactory.lookupAlias(outputTypeStr);
 
                     fOutputs.add(outputType);
                 } catch(FactTypeError e) {
