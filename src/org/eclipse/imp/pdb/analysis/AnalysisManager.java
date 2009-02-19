@@ -24,7 +24,6 @@ import org.eclipse.imp.pdb.PDBPlugin;
 import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.db.FactBase;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
-import org.eclipse.imp.pdb.facts.type.FactTypeError;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 import org.eclipse.imp.preferences.PreferenceCache;
@@ -111,7 +110,7 @@ public class AnalysisManager {
         IFactGeneratorFactory factory= fFactTypeMap.get(factType);
 
         if (factory == null) {
-            throw new FactTypeError("Unable to find generator factory for fact of type " + factType);
+            throw new AnalysisException("Unable to find generator factory for fact of type " + factType);
         }
 
         IFactGenerator analyzer= factory.create(factType);
@@ -134,7 +133,7 @@ public class AnalysisManager {
         IFactGeneratorFactory factory= fFactTypeMap.get(factType);
 
         if (factory == null) {
-            throw new FactTypeError("Unable to find generator factory for fact of type " + factType);
+            throw new AnalysisException("Unable to find generator factory for fact of type " + factType);
         }
 
         IFactGenerator analyzer= factory.create(factType);

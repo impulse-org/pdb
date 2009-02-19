@@ -22,7 +22,7 @@ import java.util.Set;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.imp.pdb.PDBPlugin;
-import org.eclipse.imp.pdb.facts.type.FactTypeError;
+import org.eclipse.imp.pdb.facts.exceptions.FactTypeUseException;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
 
@@ -45,7 +45,7 @@ class AnalysisFactoryElement {
                     Type outputType= fTypeFactory.lookupAlias(outputTypeStr);
 
                     fOutputs.add(outputType);
-                } catch(FactTypeError e) {
+                } catch(FactTypeUseException e) {
                     PDBPlugin.getInstance().logException("Invalid type: " + outputTypeStr, e);                    
                     hasErrors= true;
                 }
