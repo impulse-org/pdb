@@ -26,6 +26,7 @@ import org.eclipse.imp.pdb.facts.db.FactBase;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
 import org.eclipse.imp.pdb.facts.type.Type;
 import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.type.TypeStore;
 import org.eclipse.imp.preferences.PreferenceCache;
 
 public class AnalysisManager {
@@ -83,7 +84,9 @@ public class AnalysisManager {
                 for(int n= 0; n < factories.length; n++) {
                     AnalysisFactoryElement factoryElement= factories[n];
 
-                    for(IAnalysisDescriptor desc: factoryElement.getDescriptors()) {
+                    // TODO: new TypeStore() here is wrong, we need some kind of store to find
+                    // the types that have been registered.
+                    for(IAnalysisDescriptor desc: factoryElement.getDescriptors(new TypeStore())) {
                         final IFactGeneratorFactory factory = factoryElement.getFactory();
                         fAnalysisFactoryMap.put(desc, factory);
                         for(Type factType : desc.getOutputDescriptors()) {

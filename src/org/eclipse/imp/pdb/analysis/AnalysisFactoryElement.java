@@ -24,17 +24,15 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.imp.pdb.PDBPlugin;
 import org.eclipse.imp.pdb.facts.exceptions.FactTypeUseException;
 import org.eclipse.imp.pdb.facts.type.Type;
-import org.eclipse.imp.pdb.facts.type.TypeFactory;
+import org.eclipse.imp.pdb.facts.type.TypeStore;
 
 class AnalysisFactoryElement {
     private final class AnalysisDescriptor implements IAnalysisDescriptor {
         final String fFactoryName= fName;
 
-        private final TypeFactory fTypeFactory= TypeFactory.getInstance();
-
         final Set<Type> fOutputs= new HashSet<Type>();
 
-        private AnalysisDescriptor(IConfigurationElement outputElems) {
+        private AnalysisDescriptor(IConfigurationElement outputElems, TypeStore typeStore) {
             IConfigurationElement[] outputTypes= outputElems.getChildren();
             boolean hasErrors= false;
 
@@ -42,7 +40,7 @@ class AnalysisFactoryElement {
                 IConfigurationElement outputTypeElem= outputTypes[i];
                 String outputTypeStr= outputTypeElem.getAttribute(ANALYZER_TYPE_ATTR);
                 try {
-                    Type outputType= fTypeFactory.lookupAlias(outputTypeStr);
+                    Type outputType= typeStore.lookupAlias(outputTypeStr);
 
                     fOutputs.add(outputType);
                 } catch(FactTypeUseException e) {
@@ -125,14 +123,14 @@ class AnalysisFactoryElement {
         }
     }
 
-    private void initFromConfigurationElement() {
+    private void initFromConfigurationElement(TypeStore typeStore) {
         IConfigurationElement[] signatures= fConfigurationElement.getChildren(ANALYZER_SIGNATURE_DESC_ELEMENT);
 
         fDescriptors= new HashSet<IAnalysisDescriptor>();
         for(int i= 0; i < signatures.length; i++) {
             IConfigurationElement signature= signatures[i];
             IConfigurationElement outputTypes= signature.getChildren(ANALYZER_OUTPUTS_ELEMENT)[0];
-            IAnalysisDescriptor analysisDesc= new AnalysisDescriptor(outputTypes);
+            IAnalysisDescriptor analysisDesc= new AnalysisDescriptor(outputTypes, typeStore);
 
             fDescriptors.add(analysisDesc);
         }
@@ -142,9 +140,14 @@ class AnalysisFactoryElement {
         return fName;
     }
 
-    public Set<IAnalysisDescriptor> getDescriptors() {
+    /**
+     * 
+     * @param typeStore to lookup definitions of types
+     * @return
+     */
+    public Set<IAnalysisDescriptor> getDescriptors(TypeStore typeStore) {
         if (fDescriptors == null) {
-            initFromConfigurationElement();
+            initFromConfigurationElement(typeStore);
         }
         return fDescriptors;
     }
