@@ -25,8 +25,6 @@ import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.db.FactBase;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
 import org.eclipse.imp.pdb.facts.type.Type;
-import org.eclipse.imp.pdb.facts.type.TypeFactory;
-import org.eclipse.imp.pdb.facts.type.TypeStore;
 import org.eclipse.imp.preferences.PreferenceCache;
 
 public class AnalysisManager {
@@ -78,15 +76,12 @@ public class AnalysisManager {
                 for(int n= 0; n < elements.length; n++) {
                     IConfigurationElement element= elements[n];
                     factories[n] = new AnalysisFactoryElement(element);
-                    factories[n].getFactory().declareTypes(TypeFactory.getInstance());
                 }
                 
                 for(int n= 0; n < factories.length; n++) {
                     AnalysisFactoryElement factoryElement= factories[n];
-
-                    // TODO: new TypeStore() here is wrong, we need some kind of store to find
-                    // the types that have been registered.
-                    for(IAnalysisDescriptor desc: factoryElement.getDescriptors(new TypeStore())) {
+                    
+					for(IAnalysisDescriptor desc: factoryElement.getDescriptors()) {
                         final IFactGeneratorFactory factory = factoryElement.getFactory();
                         fAnalysisFactoryMap.put(desc, factory);
                         for(Type factType : desc.getOutputDescriptors()) {
@@ -139,9 +134,8 @@ public class AnalysisManager {
             throw new AnalysisException("Unable to find generator factory for fact of type " + factType);
         }
 
-        IFactGenerator analyzer= factory.create(factType);
-
-        // submit job to analyzer scheduler to produce this fact
+//      IFactGenerator analyzer= factory.create(factType);
+        // TODO submit job to analyzer scheduler to produce this fact
         throw new UnsupportedOperationException("produceFactAsynchronously()");
     }
     

@@ -40,13 +40,22 @@ class AnalysisFactoryElement {
                 IConfigurationElement outputTypeElem= outputTypes[i];
                 String outputTypeStr= outputTypeElem.getAttribute(ANALYZER_TYPE_ATTR);
                 try {
+                	
                     Type outputType= typeStore.lookupAlias(outputTypeStr);
+                    if (outputType == null) {
+                    	outputType = typeStore.lookupAbstractDataType(outputTypeStr);
+                    }
+                    if (outputType == null) {
+                    	throw new AnalysisException("Output type " + outputTypeStr + " was not declared by the AnalysisGeneratorFactory");
+                    }
 
                     fOutputs.add(outputType);
                 } catch(FactTypeUseException e) {
                     PDBPlugin.getInstance().logException("Invalid type: " + outputTypeStr, e);                    
                     hasErrors= true;
-                }
+                } catch (AnalysisException e) {
+                    PDBPlugin.getInstance().logException("Invalid type: " + outputTypeStr, e);                    
+				}
             }
             if (hasErrors) {
                 PDBPlugin.getInstance().logException("Errors in analysis descriptor: " + AnalysisFactoryElement.this, null);
@@ -140,14 +149,9 @@ class AnalysisFactoryElement {
         return fName;
     }
 
-    /**
-     * 
-     * @param typeStore to lookup definitions of types
-     * @return
-     */
-    public Set<IAnalysisDescriptor> getDescriptors(TypeStore typeStore) {
+    public Set<IAnalysisDescriptor> getDescriptors() {
         if (fDescriptors == null) {
-            initFromConfigurationElement(typeStore);
+            initFromConfigurationElement(fFactory.declareTypes());
         }
         return fDescriptors;
     }
