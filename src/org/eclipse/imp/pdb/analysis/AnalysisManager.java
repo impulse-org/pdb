@@ -48,6 +48,13 @@ public class AnalysisManager {
         discoverAnalyzers();
     }
 
+    public IFactGeneratorFactory findGeneratorFactory(IFactKey factKey) {
+        Type factType= factKey.getType();
+        IFactGeneratorFactory factory= fFactTypeMap.get(factType);
+
+        return factory;
+    }
+
     public void registerAnalysisFactory(IAnalysisDescriptor desc, IFactGeneratorFactory factory) {
         fAnalysisFactoryMap.put(desc, factory);
         for(Type factType : desc.getOutputDescriptors()) {
