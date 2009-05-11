@@ -15,5 +15,7 @@ Eclipse-LazyStart: true
 Export-Package: org.eclipse.imp.pdb,
  org.eclipse.imp.pdb.analysis,
  org.eclipse.imp.pdb.facts.db,
- org.eclipse.imp.pdb.facts.db.context
+ org.eclipse.imp.pdb.facts.db.context,
+ org.eclipse.imp.pdb.indexing
 Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

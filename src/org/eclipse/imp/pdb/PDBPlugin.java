@@ -7,7 +7,6 @@
 *
 * Contributors:
 *    Robert Fuhrer (rfuhrer@watson.ibm.com) - initial API and implementation
-
 *******************************************************************************/
 
 package org.eclipse.imp.pdb;
@@ -42,6 +41,7 @@ public class PDBPlugin extends PluginBase {
         if (preferencesService == null) {
             getPreferencesService();
         }
+//      Indexer.initialize(5000);
     }
 
     public String getID() {
