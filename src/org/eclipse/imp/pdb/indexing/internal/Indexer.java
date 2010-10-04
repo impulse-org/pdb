@@ -7,13 +7,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.IResourceChangeListener;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.imp.pdb.PDBPlugin;
@@ -29,9 +34,12 @@ import org.eclipse.imp.pdb.facts.db.context.ISourceEntityContext;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public class Indexer extends Job {
-    private static final int RESCHEDULE_DELAY_MSEC= 10000;
+  
+    private static final int RESCHEDULE_DELAY_MSEC = 10000;
+    
+    private boolean fIsWorking = false;
 
-    private static final Indexer sInstance= new Indexer();
+    private static final Indexer sInstance = new Indexer();
 
     public static Indexer getInstance() {
         return sInstance;
@@ -43,22 +51,34 @@ public class Indexer extends Job {
 
     private final class ChangedResourceHandler implements IResourceChangeListener {
         public void resourceChanged(IResourceChangeEvent event) {
-            IResource r= event.getResource();
+            final IResourceDelta rootResourceDelta = event.getDelta();
+            for (final IResourceDelta resourceDelta : rootResourceDelta.getAffectedChildren()) {
+                if ((resourceDelta.getResource().getType() == IResource.PROJECT) &&
+                    (resourceDelta.getKind() == IResourceDelta.CHANGED)) {
+                     try {
+                         resourceDelta.accept(new IResourceDeltaVisitor() {
+                      
+                             public boolean visit(final IResourceDelta delta) throws CoreException {
+                                 if (delta.getResource().getType() == IResource.FILE) {
+                                     final IProject project = delta.getResource().getProject();
+                                     final Set<IndexerDescriptor> indexers= fScannerMap.get(project.getFullPath());
 
-            if (r == null) {
-                return;
-            }
-
-            IPath rp= r.getFullPath();
-            IPath rpPrefix= rp;
-
-            while (rpPrefix.segmentCount() > 0) {
-                Set<IndexerDescriptor> indexers= fScannerMap.get(rpPrefix);
-
-                if (indexers != null) {
-                    for(IndexerDescriptor indexer: indexers) {
-                        fWorkQueue.push(new WorkItem(indexer, r));
-                    }
+                                     if (indexers != null) {
+                                         for(IndexerDescriptor indexer: indexers) {
+                                             fWorkQueue.push(new WorkItem(indexer, delta.getResource()));
+                                         }
+                                     }
+                                 }
+                                 return true;
+                             }
+                         
+                         });
+                     } catch (CoreException except) {
+                         PDBPlugin.getInstance().getLog().log(new MultiStatus(PDBPlugin.kPluginID, IStatus.ERROR, 
+                                                                              new IStatus[] { except.getStatus() }, 
+                                                                              "Indexing error while visiting resource delta", 
+                                                                              null /* exception */));
+                     }
                 }
             }
         }
@@ -103,7 +123,8 @@ public class Indexer extends Job {
 
     private void initializeAndSchedule(long initialDelay) {
         if (!fInitialized) {
-            ResourcesPlugin.getWorkspace().addResourceChangeListener(new ChangedResourceHandler());
+            ResourcesPlugin.getWorkspace().addResourceChangeListener(new ChangedResourceHandler(),
+                                                                     IResourceChangeEvent.POST_CHANGE);
             this.schedule(initialDelay);
             fInitialized= true;
         }
@@ -155,6 +176,14 @@ public class Indexer extends Job {
 
         removeIndexer(r.getFullPath(), key);
     }
+    
+    public boolean hasWork() {
+      return ! this.fWorkQueue.isEmpty();
+    }
+    
+    public boolean isWorking() {
+      return this.fIsWorking;
+    }
 
     private void removeIndexer(IPath path, IFactKey key) {
         Set<IndexerDescriptor> indexers= fScannerMap.get(path);
@@ -175,6 +204,7 @@ public class Indexer extends Job {
     protected IStatus run(IProgressMonitor monitor) {
         final FactBase factBase= FactBase.getInstance();
 
+        this.fIsWorking = true;
         while (!fWorkQueue.isEmpty()) {
             WorkItem item= fWorkQueue.pop();
             try {
@@ -196,8 +226,10 @@ public class Indexer extends Job {
                 e.printStackTrace();
             }
         }
+        this.fIsWorking = false;
         // Every work item we had is done; wait a while before rescheduling...
         this.schedule(RESCHEDULE_DELAY_MSEC);
         return new Status(IStatus.OK, PDBPlugin.kPluginID, "");
     }
+    
 }

@@ -88,15 +88,28 @@ public class FactBase {
     	throw new UnsupportedOperationException("NQS");
     }
 
-    public IValue getFact(IFactKey key) throws AnalysisException {
+    /**
+     * If the fact with the given key does not yet exist in this FactBase,
+     * create it. Regardless, returns the fact for the given key.
+     */
+    public IValue getFact(final IFactKey key) throws AnalysisException {
         IValue factValue= fFactDatabase.get(key);
 
         // TODO Catch FactTypeError and wrap it in an AnalysisException
         if (factValue == null) {
-        	factValue = AnalysisManager.getInstance().produceFact(key);
+            factValue = AnalysisManager.getInstance().produceFact(key);
         }
         
         return factValue;
+    }
+
+    /**
+     * Simply returns the fact with the given key if it exists, else returns
+     * null. Unlike getFact(), does not attempt to produce the fact if it does
+     * not already exist.
+     */
+    public IValue queryFact(IFactKey key) {
+        return this.fFactDatabase.get(key);
     }
     
     public void getFactAsync(IFactKey key, IFactBaseListener l) {
