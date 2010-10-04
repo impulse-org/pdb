@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: IMP Program Database (Incubation)
 Bundle-SymbolicName: org.eclipse.imp.pdb;singleton:=true
-Bundle-Version: 0.1.23.qualifier
+Bundle-Version: 0.2.1.qualifier
 Bundle-Activator: org.eclipse.imp.pdb.PDBPlugin
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
