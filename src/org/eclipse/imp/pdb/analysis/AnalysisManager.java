@@ -128,7 +128,7 @@ public class AnalysisManager {
             throw new AnalysisException("Exception encountered while producing " + factKey + ": " + e.getMessage(), e);
         }
 
-        IValue result= fFactBase.getFact(factKey);
+        IValue result= fFactBase.queryFact(factKey); // Don't call getFact() - that will bring us back here :-(
 
         return result;
     }
