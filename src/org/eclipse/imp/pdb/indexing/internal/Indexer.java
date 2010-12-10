@@ -34,11 +34,10 @@ import org.eclipse.imp.pdb.facts.db.context.ISourceEntityContext;
 import org.eclipse.imp.pdb.facts.type.Type;
 
 public class Indexer extends Job {
-  
+    // TODO This class should support multiple instances, each of which manages a distinct FactBase instance.
+
     private static final int RESCHEDULE_DELAY_MSEC = 10000;
     
-    private boolean fIsWorking = false;
-
     private static final Indexer sInstance = new Indexer();
 
     public static Indexer getInstance() {
@@ -117,6 +116,10 @@ public class Indexer extends Job {
 
     private boolean fInitialized= false;
 
+    private boolean fIsWorking = false;
+
+    private boolean fIsLocked = false;
+
     private Indexer() {
         super("IMP PDB Indexer");
     }
@@ -141,11 +144,13 @@ public class Indexer extends Job {
         ISourceEntityContext srcContext= (ISourceEntityContext) context;
         IResource r= srcContext.getEntity().getResource();
         IFactGeneratorFactory genFactory= AnalysisManager.getInstance().findGeneratorFactory(key);
-        IndexerDescriptor indexerDesc= new IndexerDescriptor(key, genFactory.create(resultType));
 
         if (genFactory == null) {
             throw new IllegalArgumentException("No factory registered for fact type: " + resultType);
         }
+
+        IndexerDescriptor indexerDesc= new IndexerDescriptor(key, genFactory.create(resultType));
+
         if (!FactBase.getInstance().getAllKeys().contains(key)) {
             // Produce the initial fact value if it doesn't yet exist
             fWorkQueue.push(new WorkItem(indexerDesc, r));
@@ -164,7 +169,7 @@ public class Indexer extends Job {
     }
 
     public void cancelFactUpdating(IFactKey key) {
-        Type resultType= key.getType();
+//      Type resultType= key.getType();
         IFactContext context= key.getContext();
 
         if (!(context instanceof ISourceEntityContext)) {
@@ -183,6 +188,18 @@ public class Indexer extends Job {
     
     public boolean isWorking() {
       return this.fIsWorking;
+    }
+
+    public boolean isLocked() {
+        return fIsLocked;
+    }
+
+    public void lock() {
+        fIsLocked = true;
+    }
+
+    public void unlock() {
+        fIsLocked = false;
     }
 
     private void removeIndexer(IPath path, IFactKey key) {
