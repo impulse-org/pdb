@@ -11,6 +11,7 @@
 
 package org.eclipse.imp.pdb;
 
+import org.eclipse.imp.pdb.indexing.internal.Indexer;
 import org.eclipse.imp.runtime.PluginBase;
 import org.osgi.framework.BundleContext;
 
@@ -41,7 +42,7 @@ public class PDBPlugin extends PluginBase {
         if (preferencesService == null) {
             getPreferencesService();
         }
-//      Indexer.initialize(5000);
+        Indexer.initialize(5000);
     }
 
     public String getID() {
