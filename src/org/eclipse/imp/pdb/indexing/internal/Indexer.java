@@ -48,6 +48,10 @@ public class Indexer extends Job {
         getInstance().initializeAndSchedule(initialDelay);
     }
 
+    public static void shutdown() {
+        getInstance().cancel();
+    }
+
     private final class ChangedResourceHandler implements IResourceChangeListener {
         public void resourceChanged(IResourceChangeEvent event) {
             final IResourceDelta rootResourceDelta = event.getDelta();
@@ -121,7 +125,7 @@ public class Indexer extends Job {
     private boolean fIsLocked = false;
 
     private Indexer() {
-        super("IMP PDB Indexer");
+        super("IMP Program DB Indexer");
     }
 
     private void initializeAndSchedule(long initialDelay) {
