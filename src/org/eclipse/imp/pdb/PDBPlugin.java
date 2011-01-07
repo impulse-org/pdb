@@ -37,6 +37,15 @@ public class PDBPlugin extends PluginBase {
         sPlugin= this;
     }
 
+    public String getID() {
+        return kPluginID;
+    }
+
+    @Override
+    public String getLanguageID() {
+        return kLanguageName;
+    }
+
     public void start(BundleContext context) throws Exception {
         super.start(context);
         if (preferencesService == null) {
@@ -45,12 +54,9 @@ public class PDBPlugin extends PluginBase {
         Indexer.initialize(5000);
     }
 
-    public String getID() {
-        return kPluginID;
-    }
-
     @Override
-    public String getLanguageID() {
-        return kLanguageName;
+    public void stop(BundleContext context) throws Exception {
+        Indexer.shutdown();
+        super.stop(context);
     }
 }
