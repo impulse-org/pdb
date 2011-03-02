@@ -51,12 +51,12 @@ public class PDBPlugin extends PluginBase {
         if (preferencesService == null) {
             getPreferencesService();
         }
-        Indexer.initialize(5000);
+//      Indexer.initialize(5000);
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        Indexer.shutdown();
+//      Indexer.shutdown();
         super.stop(context);
     }
 }
