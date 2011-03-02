@@ -16,15 +16,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.imp.core.ErrorHandler;
 import org.eclipse.imp.pdb.PDBPlugin;
 import org.eclipse.imp.pdb.facts.IValue;
-import org.eclipse.imp.pdb.facts.db.FactBase;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
 import org.eclipse.imp.pdb.facts.type.Type;
+import org.eclipse.imp.pdb.indexing.IndexedDocumentDescriptor;
 import org.eclipse.imp.preferences.PreferenceCache;
 
 public class AnalysisManager {
@@ -33,7 +34,7 @@ public class AnalysisManager {
     final static AnalysisManager sInstance= new AnalysisManager();
 
     private static final boolean DEBUG_DISCOVERY= true;
-    
+
     public static AnalysisManager getInstance() {
         return sInstance;
     }
@@ -42,9 +43,9 @@ public class AnalysisManager {
 
     private final Map<Type, IFactGeneratorFactory> fFactTypeMap= new HashMap<Type, IFactGeneratorFactory>();
 
-    private final FactBase fFactBase= FactBase.getInstance();
+    private static final HashMap<IResource,IndexedDocumentDescriptor> EMPTY_WORKING_SET= new HashMap<IResource,IndexedDocumentDescriptor>();
 
-    /* package */private AnalysisManager() {
+    private AnalysisManager() {
         discoverAnalyzers();
     }
 
@@ -119,16 +120,17 @@ public class AnalysisManager {
         }
 
         IFactGenerator analyzer= factory.create(factType);
+        IValue result = null;
 
         try {
-            analyzer.generate(fFactBase, factType, factKey.getContext());
+            result= analyzer.generate(factType, factKey.getContext(), EMPTY_WORKING_SET);
         } catch (AnalysisException e) {
             throw e;
         } catch (Exception e) {
             throw new AnalysisException("Exception encountered while producing " + factKey + ": " + e.getMessage(), e);
         }
 
-        IValue result= fFactBase.queryFact(factKey); // Don't call getFact() - that will bring us back here :-(
+//      IValue result= fFactBase.queryFact(factKey); // Don't call getFact() - that will bring us back here :-(
 
         return result;
     }
