@@ -9,7 +9,7 @@
  *    Robert Fuhrer (rfuhrer@watson.ibm.com) - initial API and implementation
  *******************************************************************************/
 
-package org.eclipse.imp.pdb.indexing.internal;
+package org.eclipse.imp.pdb.indexing;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -50,9 +50,6 @@ import org.eclipse.imp.pdb.facts.db.IFactContext;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
 import org.eclipse.imp.pdb.facts.db.context.ISourceEntityContext;
 import org.eclipse.imp.pdb.facts.type.Type;
-import org.eclipse.imp.pdb.indexing.IResourceKeyFactory;
-import org.eclipse.imp.pdb.indexing.IResourcePredicate;
-import org.eclipse.imp.pdb.indexing.IndexedDocumentDescriptor;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
