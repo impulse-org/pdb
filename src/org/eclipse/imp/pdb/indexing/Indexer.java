@@ -34,6 +34,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.imp.editor.UniversalEditor;
 import org.eclipse.imp.parser.IModelListener;
@@ -277,7 +278,7 @@ public class Indexer extends Job {
     }
 
     private static final int RESCHEDULE_DELAY_MSEC = 10000;
-    
+
     /**
      * The unique FactBase managed by this indexer instance
      */
@@ -305,30 +306,71 @@ public class Indexer extends Job {
 
     private final IModelListener fModelListener = new IndexModelListener();
 
+    private final Object fJobFamily;
+
     private boolean fInitialized= false;
 
     private boolean fIsWorking = false;
 
+    /**
+     * Creates a new Indexer instance with its own FactBase. Clients will typically
+     * subsequently make calls to {@link Indexer#keepFactUpdated(IFactKey)} or
+     * {@link Indexer#manageKeysForProjects(IResourcePredicate, IResourceKeyFactory)}
+     * to arrange for facts to be created/updated.
+     * @param indexerName an arbitrary name used to identify the job instance, e.g., in
+     * the Progress view
+     */
     public Indexer(String indexerName) {
-        super(indexerName);
+        this(indexerName, null);
     }
 
+    /**
+     * Creates a new Indexer instance with its own FactBase. Clients will typically
+     * subsequently make calls to {@link Indexer#keepFactUpdated(IFactKey)} or
+     * {@link Indexer#manageKeysForProjects(IResourcePredicate, IResourceKeyFactory)}
+     * to arrange for facts to be created/updated.
+     * @param indexerName an arbitrary name used to identify the job instance, e.g., in
+     * the Progress view
+     * @param familyID a client-supplied ID that can be used with {@link IJobManager#join(Object, IProgressMonitor)}
+     * to determine when a given Indexer instance is idle
+     */
+    public Indexer(String indexerName, Object familyID) {
+        super(indexerName);
+        fJobFamily= familyID;
+    }
+
+    /**
+     * @return the unique {@link FactBase} associated with this Indexer instance
+     */
     public FactBase getFactBase() {
         return fFactBase;
     }
 
-    public void initialize(long initialDelay) {
-        start(initialDelay);
+    @Override
+    public boolean belongsTo(Object family) {
+        return fJobFamily == family;
     }
 
+    /**
+     * Initializes this Indexer instance, and will schedule the initial work-item
+     * scan for initialDelayMSecs milliseconds from now.
+     * @param initialDelayMSecs
+     */
+    public void initialize(long initialDelayMSecs) {
+        start(initialDelayMSecs);
+    }
+
+    /**
+     * Stop all indexing activity for this Indexer instance.
+     */
     public void shutdown() {
         stop();
     }
 
-    private void start(long initialDelay) {
+    private void start(long initialDelayMSecs) {
         if (!fInitialized) {
             ResourcesPlugin.getWorkspace().addResourceChangeListener(fListener, IResourceChangeEvent.POST_CHANGE);
-            schedule(initialDelay);
+            schedule(initialDelayMSecs);
             new DocumentChangeProcessor().schedule();
             fInitialized= true;
         }
@@ -481,10 +523,17 @@ public class Indexer extends Job {
         return ! hasWork() && ! isWorking();
     }
 
+    /**
+     * @return true if this Indexer has any resource/document changes left to process
+     */
     public boolean hasWork() {
       return ! this.fWorkQueue.isEmpty();
     }
-    
+
+    /**
+     * @return true if this Indexer is currently processing the work queue of
+     * resource/document changes
+     */
     public boolean isWorking() {
       return this.fIsWorking;
     }
