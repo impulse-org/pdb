@@ -106,13 +106,19 @@ public class Indexer extends Job {
      * The amount of time between scans of fDocumentChangeTime.
      * @see DocumentChangeProcessor
      */
-    private static final int DOC_RESCAN_DELAY_MSEC= 1000;
+    public static final int DOC_RESCAN_DELAY_MSEC_DEFAULT= 100;
 
     /**
      * The amount of time that a document change has to exist before attempting
      * to update any facts that depend on it
      */
-    private static final int DOC_CHANGE_DELAY= 1000;
+    public static final int DOC_CHANGE_DELAY_DEFAULT= 1000;
+
+    /**
+     * The amount of time between schedulings of the Job that examines the work
+     * queue for work to do
+     */
+    public static final int RESCHEDULE_DELAY_MSEC = 100;
 
     /**
      * Periodically scans fDocumentChangeTime to see whether any changed documents
@@ -128,7 +134,7 @@ public class Indexer extends Job {
             long curTime= System.currentTimeMillis();
 
             for (IDocument doc: fDocumentChangeTime.keySet()) {
-                if (curTime - fDocumentChangeTime.get(doc).longValue() >= DOC_CHANGE_DELAY) {
+                if (curTime - fDocumentChangeTime.get(doc).longValue() >= fDocChangeDelay) {
                     final IResource res= fDocumentToResourceMap.get(doc);
                     final IProject project= res.getProject();
                     final Set<IndexerDescriptor> indexers= fScannerMap.get(project.getFullPath());
@@ -140,7 +146,7 @@ public class Indexer extends Job {
                     fDocumentChangeTime.remove(doc);
                 }
             }
-            schedule(DOC_RESCAN_DELAY_MSEC);
+            schedule(fDocRescanDelay);
             return Status.OK_STATUS;
         }
         
@@ -277,8 +283,6 @@ public class Indexer extends Job {
         }
     }
 
-    private static final int RESCHEDULE_DELAY_MSEC = 10000;
-
     /**
      * The unique FactBase managed by this indexer instance
      */
@@ -307,6 +311,12 @@ public class Indexer extends Job {
     private final IModelListener fModelListener = new IndexModelListener();
 
     private final Object fJobFamily;
+
+    private long fDocRescanDelay = DOC_RESCAN_DELAY_MSEC_DEFAULT;
+
+    private long fDocChangeDelay = DOC_CHANGE_DELAY_DEFAULT;
+
+    private long fQueueScanScheduleDelay = RESCHEDULE_DELAY_MSEC;
 
     private boolean fInitialized= false;
 
@@ -337,6 +347,7 @@ public class Indexer extends Job {
     public Indexer(String indexerName, Object familyID) {
         super(indexerName);
         fJobFamily= familyID;
+        setSystem(true);
     }
 
     /**
@@ -353,11 +364,28 @@ public class Indexer extends Job {
 
     /**
      * Initializes this Indexer instance, and will schedule the initial work-item
-     * scan for initialDelayMSecs milliseconds from now.
-     * @param initialDelayMSecs
+     * scan for initialDelayMSecs milliseconds from now. Equivalent to calling
+     * initialize(initialDelayMSecs, {@link Indexer#DOC_RESCAN_DELAY_MSEC_DEFAULT},
+     * {@link Indexer#DOC_CHANGE_DELAY_DEFAULT}, {@link Indexer#RESCHEDULE_DELAY_MSEC})
+     * @param initialDelayMSecs delay before initial scheduling of indexer in milliseconds
      */
     public void initialize(long initialDelayMSecs) {
+        initialize(initialDelayMSecs, DOC_RESCAN_DELAY_MSEC_DEFAULT, DOC_CHANGE_DELAY_DEFAULT, RESCHEDULE_DELAY_MSEC);
+    }
+
+    /**
+     * Initializes this Indexer instance, and will schedule the initial work-item
+     * scan for initialDelayMSecs milliseconds from now.
+     * @param initialDelayMSecs delay before initial scheduling of indexer in milliseconds
+     * @param docChangeDelayMSecs delay after a document change before an indexing request is submitted
+     * @param docRescanDelayMSecs delay between scans of the "document change" history
+     * @param queueScanDelayMSecs delay between scans of the indexer's work queue
+     */
+    public void initialize(long initialDelayMSecs, long docChangeDelayMSecs, long docRescanDelayMSecs, long queueScanDelayMSecs) {
         start(initialDelayMSecs);
+        fDocChangeDelay= docChangeDelayMSecs;
+        fDocRescanDelay= docRescanDelayMSecs;
+        fQueueScanScheduleDelay= queueScanDelayMSecs;
     }
 
     /**
@@ -591,7 +619,7 @@ public class Indexer extends Job {
         }
         this.fIsWorking = false;
         // Every work item we had is done; wait a while before rescheduling...
-        this.schedule(RESCHEDULE_DELAY_MSEC);
+        this.schedule(fQueueScanScheduleDelay);
         return new Status(IStatus.OK, PDBPlugin.kPluginID, "");
     }
 }
