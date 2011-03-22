@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.IJobManager;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.imp.editor.IResourceDocumentMapListener;
 import org.eclipse.imp.editor.UniversalEditor;
 import org.eclipse.imp.parser.IModelListener;
 import org.eclipse.imp.parser.IParseController;
@@ -51,18 +52,22 @@ import org.eclipse.imp.pdb.facts.db.IFactContext;
 import org.eclipse.imp.pdb.facts.db.IFactKey;
 import org.eclipse.imp.pdb.facts.db.context.ISourceEntityContext;
 import org.eclipse.imp.pdb.facts.type.Type;
+import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.DocumentEvent;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentListener;
+import org.eclipse.jface.text.IRegion;
 import org.eclipse.ui.IEditorPart;
 
 /**
  * Monitors resource and document changes and triggers fact updates for the
  * relevant facts in the {@link FactBase}. Each Indexer instance manages a distinct
- * {@link FactBase} instance.
+ * {@link FactBase} instance.<br>
+ * Because an Indexer can be asked to index an open document's contents, it also
+ * implements {@link IResourceDocumentMapListener}.
  * @author rfuhrer
  */
-public class Indexer extends Job {
+public class Indexer extends Job implements IResourceDocumentMapListener {
     /**
      * This class is a simple "struct" used to record the {@link IResourcePredicate} and
      * {@link IResourceKeyFactory} associated with a given request to manage key creation
@@ -164,10 +169,32 @@ public class Indexer extends Job {
             return IModelListener.AnalysisRequired.NAME_ANALYSIS;
         }
 
+        private String firstNLinesOf(IDocument doc, int N) {
+            try {
+                int lastLine = Math.min(N-1, doc.getNumberOfLines()-1);
+                IRegion lineInfo= doc.getLineInformation(lastLine);
+                int endOffset = lineInfo.getOffset() + lineInfo.getLength();
+                return doc.get(0, endOffset);
+            } catch (BadLocationException e) {
+            }
+            return "";
+        }
+
         public void update(IParseController parseController, IProgressMonitor monitor) {
             final IDocument doc= parseController.getDocument();
             final Object astRoot= parseController.getCurrentAst();
             final IResource res= fDocumentToResourceMap.get(doc);
+
+            if (res == null) {
+//              RuntimePlugin.getInstance().writeErrorMsg("Indexer received document update for unregistered document: " + doc);
+                System.out.println("Indexer received document update for unregistered document: " + doc + " ==> " + firstNLinesOf(doc, 1));
+                System.out.println("Currently registered documents:");
+                for(IDocument d : fDocumentToResourceMap.keySet()) {
+                    System.out.println("  doc " + d + " ==> " + firstNLinesOf(doc, 1));
+                }
+                return;
+            }
+
             final IProject project= res.getProject();
             final Set<IndexerDescriptor> indexers= fScannerMap.get(project.getFullPath());
 
@@ -486,6 +513,20 @@ public class Indexer extends Job {
             fDocumentMap.remove(res);
         }
         doc.removeDocumentListener(fDocChangeHandler);
+    }
+
+    public void updateResourceDocumentMap(IDocument doc, IResource res, IEditorPart editor) {
+        fDocumentToResourceMap.put(doc, res);
+        fResourceToDocumentMap.put(res, doc);
+        if (!(editor instanceof UniversalEditor)) {
+            doc.addDocumentListener(fDocChangeHandler);
+        }
+    }
+
+    public void removeDocument(IDocument doc) {
+        this.fDocumentToResourceMap.remove(doc);
+        doc.removeDocumentListener(fDocChangeHandler);
+        // Need to do anything with fDocumentMap?
     }
 
     /**
