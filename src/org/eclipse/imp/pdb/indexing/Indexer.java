@@ -632,7 +632,12 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
                 IResource res= workItem.fResource;
                 IFactKey key= indexer.fKey;
                 IFactGenerator generator= indexer.fGenerator;
-                Map<IResource, IndexedDocumentDescriptor> workingCopySet= Collections.unmodifiableMap(fDocumentMap);
+                Map<IResource, IndexedDocumentDescriptor> workingCopySet= new HashMap<IResource, IndexedDocumentDescriptor>();
+
+                // Make a copy of the document/resource map to avoid concurrent mod exceptions
+                // if another document/resource change comes along while some client is still
+                // processing previous changes.
+                workingCopySet.putAll(fDocumentMap);
 
                 // BUG If a generator is registered to produce two fact types, it will
                 // get invoked once for each type, even if it computes both in one pass.
