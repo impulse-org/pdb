@@ -511,6 +511,7 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
             fDocumentToResourceMap.remove(doc);
             fResourceToDocumentMap.remove(res);
             fDocumentMap.remove(res);
+            fDocumentChangeTime.remove(doc);
         }
         doc.removeDocumentListener(fDocChangeHandler);
     }
@@ -630,6 +631,11 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
             try {
                 IndexerDescriptor indexer= workItem.fIndexer;
                 IResource res= workItem.fResource;
+
+                if (!res.exists()) {
+                    continue;
+                }
+
                 IFactKey key= indexer.fKey;
                 IFactGenerator generator= indexer.fGenerator;
                 Map<IResource, IndexedDocumentDescriptor> workingCopySet= new HashMap<IResource, IndexedDocumentDescriptor>();
