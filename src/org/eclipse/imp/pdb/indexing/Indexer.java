@@ -11,7 +11,6 @@
 
 package org.eclipse.imp.pdb.indexing;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -239,9 +238,19 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
     
                                                 if (indexers != null) {
                                                     int changeKind = delta.getKind();
+                                                    IResource res = delta.getResource();
+
+                                                    if (changeKind == IResourceDelta.REMOVED) {
+                                                        // Remove any related entries from the document map
+                                                        IDocument doc = Indexer.this.fResourceToDocumentMap.get(res);
+
+                                                        if (doc != null) {
+                                                            unregisterDocument(doc);
+                                                        }
+                                                    }
 
                                                     for(IndexerDescriptor indexer: indexers) {
-                                                        fWorkQueue.push(new WorkItem(indexer, delta.getResource(), changeKind));
+                                                        fWorkQueue.push(new WorkItem(indexer, res, changeKind));
                                                     }
                                                 }
                                             }
@@ -632,7 +641,7 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
                 IndexerDescriptor indexer= workItem.fIndexer;
                 IResource res= workItem.fResource;
 
-                if (!res.exists()) {
+                if (!res.exists() && workItem.fChangeKind != IResourceDelta.REMOVED) {
                     continue;
                 }
 
