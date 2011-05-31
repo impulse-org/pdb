@@ -498,6 +498,14 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
      * for editing.
      */
     public void registerDocument(IDocument doc, IResource res, IEditorPart editor) {
+        // If the containing project has no registered scanners, don't register for
+        // document updates, to avoid IndexModelListener having to do null checks.
+        // This happens when the user places a file of a type that has requested
+        // indexing support within a project that doesn't get indexed (say, because
+        // it lacks the proper nature).
+        if (fScannerMap.get(res.getProject().getFullPath()) == null) {
+            return;
+        }
         fResourceToDocumentMap.put(res, doc);
         fDocumentToResourceMap.put(doc, res);
         if (editor instanceof UniversalEditor) {
