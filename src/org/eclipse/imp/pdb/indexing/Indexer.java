@@ -279,7 +279,7 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
         }
     }
 
-    private class IndexerDescriptor {
+    private static class IndexerDescriptor {
         private IFactKey fKey;
         private IFactGenerator fGenerator;
 
@@ -287,12 +287,13 @@ public class Indexer extends Job implements IResourceDocumentMapListener {
             fKey= key;
             fGenerator= gen;
         }
-        public String toString() {
+        @Override
+		public String toString() {
             return "Indexer for key " + fKey + " via generator " + fGenerator;
         }
     }
 
-    private class WorkItem {
+    private static class WorkItem {
         private final IndexerDescriptor fIndexer;
         private final IResource fResource;
         private final IDocument fDocument;
