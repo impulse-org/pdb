@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: IMP Program Database (Incubation)
 Bundle-SymbolicName: org.eclipse.imp.pdb;singleton:=true
-Bundle-Version: 0.2.1.qualifier
+Bundle-Version: 0.4.0.qualifier
 Bundle-Activator: org.eclipse.imp.pdb.PDBPlugin
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
@@ -20,4 +20,4 @@ Export-Package: org.eclipse.imp.pdb,
  org.eclipse.imp.pdb.facts.db,
  org.eclipse.imp.pdb.facts.db.context,
  org.eclipse.imp.pdb.indexing
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
