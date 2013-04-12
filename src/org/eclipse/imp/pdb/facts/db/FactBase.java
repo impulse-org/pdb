@@ -19,7 +19,6 @@ import java.util.Set;
 
 import org.eclipse.imp.pdb.analysis.AnalysisException;
 import org.eclipse.imp.pdb.analysis.AnalysisManager;
-import org.eclipse.imp.pdb.facts.IRelation;
 import org.eclipse.imp.pdb.facts.ISet;
 import org.eclipse.imp.pdb.facts.IValue;
 import org.eclipse.imp.pdb.facts.db.IFactBaseListener.Reason;
@@ -72,7 +71,7 @@ public class FactBase {
     	throw new UnsupportedOperationException("NQS");
     }
 
-    public IRelation getRelation(IFactKey key) throws AnalysisException {
+    public ISet getRelation(IFactKey key) throws AnalysisException {
         IValue factValue= fFactDatabase.get(key);
 
         // TODO Catch FactTypeError and wrap it in an AnalysisException
@@ -80,7 +79,7 @@ public class FactBase {
         	factValue = AnalysisManager.getInstance().produceFact(key);
         }
         
-        return (IRelation) factValue;
+        return (ISet) factValue;
     }
 
     public void getRelationAsync(IFactKey key, IFactBaseListener l) {
