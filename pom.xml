@@ -23,6 +23,7 @@
 		<maven.compiler.source>1.7</maven.compiler.source>
 	</properties>
 
+	<!-- Used to trigger upstream projects in Jenkins  -->
 	<dependencies>
 		<dependency>
 			<groupId>org.eclipse.imp</groupId>
