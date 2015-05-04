@@ -34,7 +34,7 @@
 			<groupId>org.eclipse.imp</groupId>
 			<artifactId>org.eclipse.imp.runtime</artifactId>
 			<version>0.2.1.qualifier</version>
-		</dependency>		
+		</dependency>
 	</dependencies>
 
 </project>
